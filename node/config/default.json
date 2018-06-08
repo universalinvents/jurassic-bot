@@ -1,0 +1,29 @@
+{
+    "appSecret": "0c963714dc3edfe0be5614d7f6506de4",
+    "pageAccessToken": "EAACfutbOvNwBAEBJUyYZAbCy1WUjgoYZBJ9auIBFeAvkTHGsU4a35EogbMDzuqoVWAAgljNG9kh0IrUabbbos1FZBv2EtI59CiMuxMsc1A0MxpFCYhaDKs9oZChF6ZCU6aE5KbwWAOj1G6HHUMkpJHaJXff1gcaTFIs3XyvZCFMAZDZD",
+    "validationToken": "TOKEN",
+    "serverURL": "https://lazy-husky-83.localtunnel.me",
+    "googleMapKey": "AIzaSyDXwnZUnf-IUmUQPHHrtQsgiEBaSwVed6k",
+    "locations": [
+        {
+            "name": "Walmart, Burbank",
+            "location": "34.192844,-118.325357"
+        },
+        {
+            "name": "Walmart, Panorama City",
+            "location": "34.229088,-118.450322"
+        },
+        {
+            "name": "Walmart, West Hills",
+            "location": "34.193453,-118.625984"
+        },
+        {
+            "name": "Walmart, Rosemead",
+            "location": "34.057232,-118.085375"
+        },
+        {
+            "name": "Walmart, Norwalk",
+            "location": "33.918446,-118.082916"
+        }
+    ]
+}

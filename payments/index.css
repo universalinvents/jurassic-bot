@@ -1,0 +1,108 @@
+body {
+    font-family: "Helvetica";
+    padding: 0 30px;
+}
+
+#app h5 {
+    margin: 10px 0;
+    font-weight: 300;
+    font-size: 1.8em;
+    color: #929292;
+}
+
+#app h5.val {
+    color: #000;
+    font-weight: 400;
+}
+
+#app p.footer {
+    font-size: 1.5em;
+    color: #929292;
+    font-weight: 300;
+}
+
+#app p.footer b {
+    color: #000;
+    font-weight: 500;
+}
+
+#app hr {
+    border-top: 1px solid #cdcdd1;
+    margin: 24px 0;
+}
+
+#app .header {
+    padding: 28px 0;
+}
+
+#app .header img {
+    width: 25%;
+}
+
+#app .header .item-info {
+    float: right;
+    width: calc(75% - 40px);
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#app .header h2 {
+    font-size: 2.5em;
+    margin-top: 15px;
+    margin-bottom: 0;
+}
+
+#app .header p {
+    font-size: 1.7em;
+    color: #90949c;
+    margin-top: 5px;
+}
+
+#app .total span {
+    display: block;
+}
+
+#app .total span > * {
+    display: inline-block;
+}
+
+#app .total span > h5:last-child {
+    float: right;
+}
+
+#app .total span.total > h5 {
+    color: #000;
+    font-weight: 600;
+}
+
+#app button.pay {
+    width: 95%;
+    padding: 30px 0;
+    font-size: 2em;
+    color: #ffffff;
+    font-weight: 300;
+    border: none;
+    border-radius: 3px;
+    background: #0084ff;
+    margin-top: 20px;
+    position: fixed;
+    bottom: 30px;
+    left: calc(5% - 27px);
+}
+
+#confirmation {
+    padding: 75px;
+}
+
+#confirmation img {
+    display: block;
+    width: 20%;
+    margin: 50px auto;
+}
+
+#confirmation h5 {
+    text-align: center;
+    font-weight: 300;
+    color: #929292;
+    font-size: 1.8em;
+}
