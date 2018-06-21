@@ -1,6 +1,8 @@
 {
     "appSecret": "0c963714dc3edfe0be5614d7f6506de4",
-    "pageAccessToken": "EAACfutbOvNwBAEBJUyYZAbCy1WUjgoYZBJ9auIBFeAvkTHGsU4a35EogbMDzuqoVWAAgljNG9kh0IrUabbbos1FZBv2EtI59CiMuxMsc1A0MxpFCYhaDKs9oZChF6ZCU6aE5KbwWAOj1G6HHUMkpJHaJXff1gcaTFIs3XyvZCFMAZDZD",
+    "pageAccessTokens": [
+        "EAACfutbOvNwBAEBJUyYZAbCy1WUjgoYZBJ9auIBFeAvkTHGsU4a35EogbMDzuqoVWAAgljNG9kh0IrUabbbos1FZBv2EtI59CiMuxMsc1A0MxpFCYhaDKs9oZChF6ZCU6aE5KbwWAOj1G6HHUMkpJHaJXff1gcaTFIs3XyvZCFMAZDZD"
+    ],
     "validationToken": "TOKEN",
     "serverURL": "https://lazy-husky-83.localtunnel.me",
     "googleMapKey": "AIzaSyDXwnZUnf-IUmUQPHHrtQsgiEBaSwVed6k",
@@ -25,5 +27,28 @@
             "name": "Walmart, Norwalk",
             "location": "33.918446,-118.082916"
         }
+    ],
+    "arCodes": [
+        "ar-1",
+        "phys-00",
+        "phys-01",
+        "phys-02",
+        "phys-03",
+        "phys-04",
+        "phys-05",
+        "phys-06",
+        "phys-07",
+        "phys-08",
+        "phys-09",
+        "digi-00",
+        "digi-01",
+        "digi-02",
+        "digi-03",
+        "digi-04",
+        "digi-05",
+        "digi-06",
+        "digi-07",
+        "digi-08",
+        "digi-09"
     ]
 }

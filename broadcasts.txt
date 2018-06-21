@@ -46,20 +46,28 @@ curl -X POST -H "Content-Type: application/json" -d '{
           "locale": "default",
           "composer_input_disabled": false,
           "call_to_actions": [
+              {
+                  "type":"web_url",
+                  "title":"Buy Tickets",
+                  "url":"https://mobile.fandango.com/jurassic-world-fallen-kingdom-203382/movie-times",
+                  "webview_height_ratio":"full"
+              },
             {
-                "title": "Locate In-Store Experience",
+                "title": "Locate In-Store AR Experience",
                 "type": "postback",
                 "payload": "store_locations"
             },
             {
-              "title": "Buy Now",
-              "type": "postback",
-              "payload": "buy"
+                "type":"web_url",
+                "title":"Play Jurassic World Alive",
+                "url":"https://s3.us-east-2.amazonaws.com/jurassic-bot/games-ui/index.html?u=https%3A%2F%2Fitunes.apple.com%2Fca%2Fapp%2Fjurassic-world-alive%2Fid1231085864",
+                "messenger_extensions": true,
+                "webview_height_ratio":"compact"
             }
           ]
         }
       ]
-}' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=
+}' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=EAACfutbOvNwBAFvOoC1C29PMLlrV9T95i6hfmEVaXxRS4S4QtKQH314K1izWWPlYWddaBXTYmIIVwXMZC7dKQnzFC2jQE73ge5k8FfZBw99fjUiMELLFBZBKhmHCXQ9IlNZAKN7ZAJNjSAaCmocczsZAvraLugZBXiffTnAjdot0AZDZD"
 
 curl -X POST -H "Content-Type: application/json" -d '{
   "message":{

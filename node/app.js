@@ -22,6 +22,12 @@ const
 const QUICK_REPLIES = [
     {
         "content_type":"text",
+        "title":"Tickets",
+        "payload":"tickets",
+        "image_url": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Fandango.jpg"
+    },
+    {
+        "content_type":"text",
         "title":"News",
         "payload":"news",
         "image_url": "https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/news-512.png"
@@ -63,9 +69,7 @@ const VALIDATION_TOKEN = (process.env.MESSENGER_VALIDATION_TOKEN) ?
 config.get('validationToken');
 
 // Generate a page access token for your page from the App Dashboard
-const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
-(process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
-config.get('pageAccessToken');
+const PAGE_ACCESS_TOKENS = config.get('pageAccessTokens');
 
 // URL where the app is running (include protocol). Used to point to scripts and
 // assets located at this address.
@@ -73,7 +77,7 @@ const SERVER_URL = (process.env.SERVER_URL) ?
 (process.env.SERVER_URL) :
 config.get('serverURL');
 
-if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
+if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKENS && SERVER_URL)) {
     console.error("Missing config values");
     process.exit(1);
 }
@@ -261,7 +265,9 @@ function receivedMessage(event) {
     var messageAttachments = message.attachments;
     var quickReply = message.quick_reply;
     var isLocation = message.mid && message.attachments
-    && message.attachments.length > 0 && message.attachments[0].payload.coordinates;
+    && message.attachments.length > 0
+    && message.attachments[0].payload
+    && message.attachments[0].payload.coordinates;
 
     if (isEcho) {
         // Just logging message echoes to console
@@ -274,6 +280,9 @@ function receivedMessage(event) {
         messageId, quickReplyPayload);
 
         switch(quickReplyPayload) {
+            case 'tickets':
+            sendTicketMessage(senderID);
+            break;
             case 'trailers':
             sendTrailerList(senderID);
             break;
@@ -330,114 +339,126 @@ function receivedMessage(event) {
             sendWelcomeMessage(senderID);
             break;
 
+            case 'tickets':
+                sendTicketMessage(senderID);
+            break;
+
+            case 'trailers':
+                sendTrailerList(senderID);
+            break;
+
+            case 'news':
+                sendNewsMessage(senderID);
+            break;
+
             case 'help':
             case 'help me':
-            sendGetStarted(senderID);
+                sendGetStarted(senderID);
             break;
 
             case 'ar':
-            sendAR1Message(senderID);
+                sendAR1Message(senderID);
             break;
 
             case 'where to buy':
             case 'where to buy?':
             case 'location':
             case 'locations':
-            sendLocationMessage(senderID);
+                sendLocationMessage(senderID);
             break;
 
             case 't1':
-            sendT1Message();
+                sendT1Message();
             break;
 
             case 't2':
-            sendT2Message();
+                sendT2Message();
             break;
 
             case 't3':
-            sendT3Message();
+                sendT3Message();
             break;
 
             case 'ma':
-            sendMoviesAnywhereMessage(senderID);
+                sendMoviesAnywhereMessage(senderID);
             break;
 
             case 'buy':
-            sendPaymentMessage(senderID);
+                sendPaymentMessage(senderID);
             break;
 
             case "whats new":
-            sendNewsMessage(senderID);
+                sendNewsMessage(senderID);
             break;
 
             case 'game':
             case 'games':
-            sendGamesMessage(senderID);
+                sendGamesMessage(senderID);
             break;
 
             case 'where to buy?':
-            console.log('where to buy? sent');
+                console.log('where to buy? sent');
             break;
 
             case 'hello':
             case 'hi':
-            sendHiMessage(senderID);
+                sendHiMessage(senderID);
             break;
 
             case 'image':
-            requiresServerURL(sendImageMessage, [senderID]);
+                requiresServerURL(sendImageMessage, [senderID]);
             break;
 
             case 'gif':
-            requiresServerURL(sendGifMessage, [senderID]);
+                requiresServerURL(sendGifMessage, [senderID]);
             break;
 
             case 'audio':
-            requiresServerURL(sendAudioMessage, [senderID]);
+                requiresServerURL(sendAudioMessage, [senderID]);
             break;
 
             case 'video':
-            requiresServerURL(sendVideoMessage, [senderID]);
+                requiresServerURL(sendVideoMessage, [senderID]);
             break;
 
             case 'file':
-            requiresServerURL(sendFileMessage, [senderID]);
+                requiresServerURL(sendFileMessage, [senderID]);
             break;
 
             case 'button':
-            sendButtonMessage(senderID);
+                sendButtonMessage(senderID);
             break;
 
             case 'generic':
-            requiresServerURL(sendGenericMessage, [senderID]);
+                requiresServerURL(sendGenericMessage, [senderID]);
             break;
 
             case 'receipt':
-            requiresServerURL(sendReceiptMessage, [senderID]);
+                requiresServerURL(sendReceiptMessage, [senderID]);
             break;
 
             case 'quick reply':
-            sendQuickReply(senderID);
+                sendQuickReply(senderID);
             break;
 
             case 'read receipt':
-            sendReadReceipt(senderID);
+                sendReadReceipt(senderID);
             break;
 
             case 'typing on':
-            sendTypingOn(senderID);
+                sendTypingOn(senderID);
             break;
 
             case 'typing off':
-            sendTypingOff(senderID);
+                sendTypingOff(senderID);
             break;
 
             case 'account linking':
-            requiresServerURL(sendAccountLinking, [senderID]);
+                requiresServerURL(sendAccountLinking, [senderID]);
             break;
 
             default:
-            sendTextMessage(senderID, messageText);
+                sendTextMessage(senderID, messageText);
         }
     } else if (messageAttachments) {
         // sendTextMessage(senderID, "Message with attachment received");
@@ -493,7 +514,8 @@ function receivedPostback(event) {
     console.log(payload);
     switch(payload) {
         case 'get_started':
-        if (event.postback.referral && event.postback.referral.ref == 'ar-1') {
+        if (event.postback.referral &&
+            config.get('arCodes').indexOf(event.postback.referral.ref) > -1) {
             sendWelcomeMessage(senderID, true);
         }
         else {
@@ -501,37 +523,37 @@ function receivedPostback(event) {
         }
         break;
         case 'set_notifications_on':
-        console.log('Setting subscription notifications on');
-        sendGetStarted(senderID);
+            console.log('Setting subscription notifications on');
+            sendGetStarted(senderID);
         break;
         case 'store_locations':
-        sendLocationMessage(senderID);
+            sendLocationMessage(senderID);
         break;
         case 'buy':
-        sendPaymentMessage(senderID);
+            sendPaymentMessage(senderID);
         break;
         case 'watch_trailer_1':
-        sendTrailerMessage(
-            senderID,
-            'https://www.facebook.com/JurassicWorld/videos/1831201053591436/'
-        );
+            sendTrailerMessage(
+                senderID,
+                'https://www.facebook.com/JurassicWorld/videos/1831201053591436/'
+            );
         break;
         case 'watch_trailer_2':
-        sendTrailerMessage(
-            senderID,
-            'https://www.facebook.com/JurassicWorld/videos/1741273549250854/UzpfSTQ1NzY3MzcxNDI3MDg0NToxNjYyOTI2NzgwNDEyMTkz/'
-        );
+            sendTrailerMessage(
+                senderID,
+                'https://www.facebook.com/JurassicWorld/videos/1741273549250854/UzpfSTQ1NzY3MzcxNDI3MDg0NToxNjYyOTI2NzgwNDEyMTkz/'
+            );
         break;
         case 'watch_trailer_3':
-        sendTrailerMessage(
-            senderID,
-            'https://www.facebook.com/JurassicWorld/videos/1870976169613924/'
-        );
+            sendTrailerMessage(
+                senderID,
+                'https://www.facebook.com/JurassicWorld/videos/1870976169613924/'
+            );
         break;
         default:
-        // When a postback is called, we'll send a message back to the sender to
-        // let them know it was successful
-        sendTextMessage(senderID, "Postback called");
+            // When a postback is called, we'll send a message back to the sender to
+            // let them know it was successful
+            sendTextMessage(senderID, "Postback called");
 
     }
 }
@@ -553,25 +575,28 @@ function receiveReferral(event) {
 
     // Parametric code scanned
     if (payload.source == 'MESSENGER_CODE') {
-        switch(payload.ref) {
-            case 'ar-1':
+        console.log(payload.ref);
+        if (config.get('arCodes').indexOf(payload.ref) > -1) {
             sendAR1Message(senderID);
-            break;
+            return;
+        }
+
+        switch(payload.ref) {
             case 'contest-loser':
-            sendContestMessage(
-                senderID,
-                "Sorry, you didn't win this week. "+
-                "Don't lose hope though. Try again next week!"
-            );
-            break;
+                sendContestMessage(
+                    senderID,
+                    "Sorry, you didn't win this week. "+
+                    "Don't lose hope though. Try again next week!"
+                );
+                break;
             case 'contest-winner':
-            sendContestMessage(
-                senderID,
-                "Congratulations! You are this week's winner!!"
-            );
-            break;
+                sendContestMessage(
+                    senderID,
+                    "Congratulations! You are this week's winner!!"
+                );
+                break;
             default:
-            console.log('pie');
+                console.log('pie');
         }
     }
 }
@@ -1126,6 +1151,12 @@ function sendGetStarted(recipientId) {
             quick_replies: [
                 {
                     "content_type":"text",
+                    "title":"Tickets",
+                    "payload":"tickets",
+                    "image_url": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Fandango.jpg"
+                },
+                {
+                    "content_type":"text",
                     "title":"News",
                     "payload":"news",
                     "image_url": "https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/news-512.png"
@@ -1159,13 +1190,14 @@ function sendNotificationMessage(recipientId, showAR) {
             id: recipientId
         },
         message: {
+            quick_replies: QUICK_REPLIES,
             attachment: {
                 type: "template",
                 payload: {
                     template_type: "generic",
                     elements: [{
                         title: "There's a secret event happening at a location near you. "
-                        + "Would you like to stay up to date?",
+                        + "Stay up to date?",
                         subtitle: "Join the list and keep up-to-date.",
                         image_url: "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Screen+Shot+2018-05-30+at+3.33.24+PM.png",
                         buttons: [{
@@ -1509,6 +1541,33 @@ function sendNewsMessage(recipientId) {
     callSendAPI(messageData);
 }
 
+function sendTicketMessage(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            quick_replies: QUICK_REPLIES,
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "Fandango",
+                    buttons: [{
+                        "title": "View Showtimes",
+                        "type": "web_url",
+                        "url": "https://mobile.fandango.com/jurassic-world-fallen-kingdom-203382/movie-times",
+                        "messenger_extensions": true,
+                        "webview_height_ratio": "full"
+                    }]
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
 /*
 * Send initial welcome message
 *
@@ -1732,33 +1791,38 @@ function sendContestMessage(recipientId, message) {
 *
 */
 function callSendAPI(messageData, callback) {
-    request({
-        uri: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: { access_token: PAGE_ACCESS_TOKEN },
-        method: 'POST',
-        json: messageData
+    PAGE_ACCESS_TOKENS.forEach(function(pageAccessToken) {
+        request({
+            uri: 'https://graph.facebook.com/v2.6/me/messages',
+            qs: { access_token: pageAccessToken },
+            method: 'POST',
+            json: messageData
 
-    }, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            var recipientId = body.recipient_id;
-            var messageId = body.message_id;
+        }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var recipientId = body.recipient_id;
+                var messageId = body.message_id;
 
-            if (messageId) {
-                console.log("Successfully sent message with id %s to recipient %s",
-                messageId, recipientId);
+                if (messageId) {
+                    console.log("Successfully sent message with id %s to recipient %s",
+                    messageId, recipientId);
+                } else {
+                    console.log("Successfully called Send API for recipient %s",
+                    recipientId);
+                }
+
+                if (callback) {
+                    callback(recipientId);
+                }
+
             } else {
-                console.log("Successfully called Send API for recipient %s",
-                recipientId);
+                console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
             }
-
-            if (callback) {
-                callback(recipientId);
-            }
-
-        } else {
-            console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
-        }
+        });
     });
+    // if (callback) {
+    //     callback(messageData.recipient.id);
+    // }
 }
 
 /*
@@ -1766,49 +1830,51 @@ function callSendAPI(messageData, callback) {
 *
 */
 function callBroadcastAPI(messageData, callback) {
-    request({
-        uri: 'https://graph.facebook.com/v2.11/me/message_creatives',
-        qs: { access_token: PAGE_ACCESS_TOKEN },
-        method: 'POST',
-        json: messageData
+    PAGE_ACCESS_TOKENS.forEach(function(pageAccessToken) {
+        request({
+            uri: 'https://graph.facebook.com/v2.11/me/message_creatives',
+            qs: { access_token: pageAccessToken },
+            method: 'POST',
+            json: messageData
 
-    }, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            var messageId = body.message_creative_id;
+        }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var messageId = body.message_creative_id;
 
-            if (messageId) {
-                console.log("Successfully sent message with id %s to recipient %s",
-                messageId);
+                if (messageId) {
+                    console.log("Successfully sent message with id %s to recipient %s",
+                    messageId);
 
-                request({
-                    uri: 'https://graph.facebook.com/v2.11/me/broadcast_messages',
-                    qs: { access_token: PAGE_ACCESS_TOKEN },
-                    method: 'POST',
-                    json: {
-                        message_creative_id: messageId,
-                        notification_type: "REGULAR",
-                        messaging_type: "MESSAGE_TAG"
-                    }
-                }, function (error, response, body) {
-                    if (!error && response.statusCode == 200) {
-                        var messageId = body.broadcast_id;
-
-                        if (messageId) {
-                            console.log("Successfully sent message with id %s to recipient %s",
-                            messageId);
+                    request({
+                        uri: 'https://graph.facebook.com/v2.11/me/broadcast_messages',
+                        qs: { access_token: pageAccessToken },
+                        method: 'POST',
+                        json: {
+                            message_creative_id: messageId,
+                            notification_type: "REGULAR",
+                            messaging_type: "MESSAGE_TAG"
                         }
+                    }, function (error, response, body) {
+                        if (!error && response.statusCode == 200) {
+                            var messageId = body.broadcast_id;
 
-                        if (callback) {
-                            callback(recipientId);
+                            if (messageId) {
+                                console.log("Successfully sent message with id %s to recipient %s",
+                                messageId);
+                            }
+
+                            if (callback) {
+                                callback(recipientId);
+                            }
+                        } else {
+                            console.error("Failed calling Broadcast API", response.statusCode, response.statusMessage, body.error);
                         }
-                    } else {
-                        console.error("Failed calling Broadcast API", response.statusCode, response.statusMessage, body.error);
-                    }
-                });
+                    });
+                }
+            } else {
+                console.error("Failed calling Broadcast API", response.statusCode, response.statusMessage, body.error);
             }
-        } else {
-            console.error("Failed calling Broadcast API", response.statusCode, response.statusMessage, body.error);
-        }
+        });
     });
 }
 
