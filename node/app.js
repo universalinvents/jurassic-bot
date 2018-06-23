@@ -28,15 +28,15 @@ const QUICK_REPLIES = [
     },
     {
         "content_type":"text",
-        "title":"News",
-        "payload":"news",
-        "image_url": "https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/news-512.png"
-    },
-    {
-        "content_type":"text",
         "title":"Trailers",
         "payload":"trailers",
         "image_url": "https://d30y9cdsu7xlg0.cloudfront.net/png/17793-200.png"
+    },
+    {
+        "content_type":"text",
+        "title":"Photo Gallery",
+        "payload":"gallery",
+        "image_url": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/picture.png"
     },
     {
         "content_type":"text",
@@ -44,6 +44,22 @@ const QUICK_REPLIES = [
         "payload":"games",
         "image_url": "https://i.pinimg.com/originals/97/3e/e2/973ee216a3181a881bca360d7b0fee6a.png"
     }
+];
+
+const GALLERY = [
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/1.png', id: '259770397907914' },
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2.png', id: '259771317907822' },
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_D067_00295_v1_current.jpg', id: '259771597907794' },
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_FPT2_00147E_0147R_GRD_COMP_v1_current.JPG', id: '259771941241093' },
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_SB_00012R_v1_current.JPG', id: '259772131241074' },
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TP2_00070R_v1_current.JPG', id:
+    '259772301241057' },
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TPT_00010R_GRD_v1_current.JPG', id: '259772521241035' },
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/8.png', id: '259772851241002' },
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TP_00001R_v1_current.JPG', id: '259773234574297' },
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TP_00054R_v1_current.JPG', id: '259773401240947' },
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TP_00073R_v1_current.JPG', id: '259773574574263' },
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TRLR_V47_C03_G01_863760R_v1_current.JPG', id: '259773791240908' }
 ];
 
 var app = express();
@@ -292,6 +308,9 @@ function receivedMessage(event) {
             case 'games':
             sendGamesMessage(senderID);
             break;
+            case 'gallery':
+            sendGalleryMessage(senderID);
+            break;
         }
         return;
     }
@@ -514,42 +533,103 @@ function receivedPostback(event) {
     console.log(payload);
     switch(payload) {
         case 'get_started':
-        if (event.postback.referral &&
-            config.get('arCodes').indexOf(event.postback.referral.ref) > -1) {
-            sendWelcomeMessage(senderID, true);
-        }
-        else {
-            sendWelcomeMessage(senderID);
-        }
-        break;
+            if (event.postback.referral &&
+                config.get('arCodes').indexOf(event.postback.referral.ref) > -1) {
+                sendWelcomeMessage(senderID, true);
+            }
+            else {
+                sendWelcomeMessage(senderID);
+            }
+            break;
         case 'set_notifications_on':
             console.log('Setting subscription notifications on');
             sendGetStarted(senderID);
-        break;
+            break;
         case 'store_locations':
             sendLocationMessage(senderID);
-        break;
+            break;
         case 'buy':
             sendPaymentMessage(senderID);
-        break;
+            break;
+        case 'watch_trailer_0':
+            sendTrailerMessage(
+                senderID,
+                '259667444584876'
+            );
+            break;
         case 'watch_trailer_1':
             sendTrailerMessage(
                 senderID,
-                'https://www.facebook.com/JurassicWorld/videos/1831201053591436/'
+                '259670074584613'
             );
-        break;
-        case 'watch_trailer_2':
-            sendTrailerMessage(
+            break;
+        case 'view_gallery_0':
+            sendImageMesage(
                 senderID,
-                'https://www.facebook.com/JurassicWorld/videos/1741273549250854/UzpfSTQ1NzY3MzcxNDI3MDg0NToxNjYyOTI2NzgwNDEyMTkz/'
+                GALLERY[0].id
             );
-        break;
-        case 'watch_trailer_3':
-            sendTrailerMessage(
+            break;
+        case 'view_gallery_1':
+            sendImageMesage(
                 senderID,
-                'https://www.facebook.com/JurassicWorld/videos/1870976169613924/'
+                GALLERY[1].id
             );
-        break;
+            break;
+        case 'view_gallery_2':
+            sendImageMesage(
+                senderID,
+                GALLERY[2].id
+            );
+            break;
+        case 'view_gallery_3':
+            sendImageMesage(
+                senderID,
+                GALLERY[3].id
+            );
+            break;
+        case 'view_gallery_4':
+            sendImageMesage(
+                senderID,
+                GALLERY[4].id
+            );
+            break;
+        case 'view_gallery_5':
+            sendImageMesage(
+                senderID,
+                GALLERY[5].id
+            );
+            break;
+        case 'view_gallery_6':
+            sendImageMesage(
+                senderID,
+                GALLERY[6].id
+            );
+            break;
+        case 'view_gallery_7':
+            sendImageMesage(
+                senderID,
+                GALLERY[7].id
+            );
+            break;
+        case 'view_gallery_8':
+            sendImageMesage(
+                senderID,
+                GALLERY[8].id
+            );
+            break;
+        case 'view_gallery_9':
+            sendImageMesage(
+                senderID,
+                GALLERY[9].id
+            );
+            break;
+        case 'view_gallery_10':
+            sendImageMesage(
+                senderID,
+                GALLERY[10].id
+            );
+            break;
+
         default:
             // When a postback is called, we'll send a message back to the sender to
             // let them know it was successful
@@ -728,27 +808,27 @@ function sendImageMessage(recipientId) {
     callSendAPI(messageData);
 }
 
-/*
-* Send a Gif using the Send API.
-*
-*/
-function sendGifMessage(recipientId) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            attachment: {
-                type: "image",
-                payload: {
-                    url: SERVER_URL + "/assets/instagram_logo.gif"
-                }
-            }
-        }
-    };
-
-    callSendAPI(messageData);
-}
+// /*
+// * Send a Gif using the Send API.
+// *
+// */
+// function sendGifMessage(recipientId) {
+//     var messageData = {
+//         recipient: {
+//             id: recipientId
+//         },
+//         message: {
+//             attachment: {
+//                 type: "image",
+//                 payload: {
+//                     url: SERVER_URL + "/assets/instagram_logo.gif"
+//                 }
+//             }
+//         }
+//     };
+//
+//     callSendAPI(messageData);
+// }
 
 /*
 * Send audio using the Send API.
@@ -1148,43 +1228,14 @@ function sendGetStarted(recipientId) {
         },
         message: {
             text: "What are you looking for?",
-            quick_replies: [
-                {
-                    "content_type":"text",
-                    "title":"Tickets",
-                    "payload":"tickets",
-                    "image_url": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Fandango.jpg"
-                },
-                {
-                    "content_type":"text",
-                    "title":"News",
-                    "payload":"news",
-                    "image_url": "https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/news-512.png"
-                },
-                {
-                    "content_type":"text",
-                    "title":"Trailers",
-                    "payload":"trailers",
-                    "image_url": "https://d30y9cdsu7xlg0.cloudfront.net/png/17793-200.png"
-                },
-                {
-                    "content_type":"text",
-                    "title":"Games",
-                    "payload":"games",
-                    "image_url": "https://i.pinimg.com/originals/97/3e/e2/973ee216a3181a881bca360d7b0fee6a.png"
-                }
-            ]
+            quick_replies: QUICK_REPLIES
         }
     };
 
     callSendAPI(messageData);
 }
 
-/*
-* Request to send notifications
-*
-*/
-function sendNotificationMessage(recipientId, showAR) {
+function sendGifMessage(recipientId, showAR) {
     var messageData = {
         recipient: {
             id: recipientId
@@ -1194,18 +1245,13 @@ function sendNotificationMessage(recipientId, showAR) {
             attachment: {
                 type: "template",
                 payload: {
-                    template_type: "generic",
-                    elements: [{
-                        title: "There's a secret event happening at a location near you. "
-                        + "Stay up to date?",
-                        subtitle: "Join the list and keep up-to-date.",
-                        image_url: "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Screen+Shot+2018-05-30+at+3.33.24+PM.png",
-                        buttons: [{
-                            type: "postback",
-                            title: "Yes I'm In!",
-                            payload: "set_notifications_on"
-                        }],
-                    }]
+                    template_type: 'media',
+                    elements: [
+                        {
+                            media_type: 'image',
+                            attachment_id: '259707654580855'
+                        }
+                    ]
                 }
             }
         }
@@ -1219,6 +1265,44 @@ function sendNotificationMessage(recipientId, showAR) {
     else {
         callSendAPI(messageData);
     }
+
+    sendNotificationMessage(recipientId);
+}
+
+/*
+* Request to send notifications
+*
+*/
+function sendNotificationMessage(recipientId) {
+    var messageData = {
+        messages: [{
+            quick_replies: QUICK_REPLIES,
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "generic",
+                    elements: [{
+                        title: "There's a secret event happening at a location near you. "
+                       + "Stay up to date?",
+                       subtitle: "Join the list and keep up-to-date.",
+                       image_url: "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Screen+Shot+2018-05-30+at+3.33.24+PM.png",
+                       buttons: [{
+                           type: "postback",
+                           title: "Yes I'm In!",
+                           payload: "set_notifications_on"
+                       }]
+                    }]
+                }
+            }
+        }]
+    };
+
+    createBroadcastLabel(recipientId, function(label) {
+        var d = new Date();
+        var newDateObj = new Date(d.getTime() + 1440*60000);
+        var futureTime = newDateObj.toISOString();
+        callBroadcastAPI(messageData, null, label, futureTime);
+    });
 }
 
 /*
@@ -1276,32 +1360,22 @@ function sendTrailerList(recipientId) {
                     elements: [
                         {
                             title: "Jurassic World Fallen Kingdom",
-                            subtitle: "Trailer 1\n2m 30s",
-                            image_url:  "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Jurassic-World-Global-trailer-03-1280x640.jpg",
+                            subtitle: 'Trailer\n2m 30s',
+                            image_url:  "https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/trailer_thumbnail.png",
+                            buttons: [{
+                                type: "postback",
+                                title: "Watch",
+                                payload: "watch_trailer_0"
+                            }]
+                        },
+                        {
+                            title: "Jurassic World Fallen Kingdom",
+                            subtitle: "Behind the Scenes\n2m 36s",
+                            image_url:  "https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/behind_thumbnail.png",
                             buttons: [{
                                 type: "postback",
                                 title: "Watch",
                                 payload: "watch_trailer_1"
-                            }]
-                        },
-                        {
-                            title: "Jurassic World Fallen Kingdom",
-                            subtitle: "Trailer 2\n0m 16s",
-                            image_url:  "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Jurassic-World-Fallen-Kingdom-Teaser-Trailer-T-Rex.jpg",
-                            buttons: [{
-                                type: "postback",
-                                title: "Watch",
-                                payload: "watch_trailer_2"
-                            }]
-                        },
-                        {
-                            title: "Jurassic World Fallen Kingdom",
-                            subtitle: "Trailer 3\n0m 10s",
-                            image_url:  "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/jurassic-world-fallen-kingdom-logo-feature.jpg",
-                            buttons: [{
-                                type: "postback",
-                                title: "Watch",
-                                payload: "watch_trailer_3"
                             }]
                         }
                     ]
@@ -1317,7 +1391,7 @@ function sendTrailerList(recipientId) {
 * Send an individual trailer
 *
 */
-function sendTrailerMessage(recipientId, url) {
+function sendTrailerMessage(recipientId, id) {
     var messageData = {
         recipient: {
             id: recipientId
@@ -1331,7 +1405,36 @@ function sendTrailerMessage(recipientId, url) {
                     elements: [
                         {
                             media_type: 'video',
-                            url: url
+                            attachment_id: id
+                        }
+                    ]
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+/*
+* Send an individual image
+*
+*/
+function sendImageMesage(recipientId, id) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            quick_replies: QUICK_REPLIES,
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: 'media',
+                    elements: [
+                        {
+                            media_type: 'image',
+                            attachment_id: id
                         }
                     ]
                 }
@@ -1541,6 +1644,121 @@ function sendNewsMessage(recipientId) {
     callSendAPI(messageData);
 }
 
+/*
+* Send a list of news articles
+*
+*/
+function sendGalleryMessage(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            quick_replies: QUICK_REPLIES,
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "generic",
+                    elements: [
+                        {
+                            title: "Image 1",
+                            image_url: GALLERY[0].img,
+                            buttons: [{
+                                type: "postback",
+                                title: "View Image",
+                                payload: "view_gallery_0"
+                            }]
+                        },
+                        {
+                            title: "Image 2",
+                            image_url: GALLERY[1].img,
+                            buttons: [{
+                                type: "postback",
+                                title: "View Image",
+                                payload: "view_gallery_1"
+                            }]
+                        },
+                        {
+                            title: "Image 3",
+                            image_url: GALLERY[2].img,
+                            buttons: [{
+                                type: "postback",
+                                title: "View Image",
+                                payload: "view_gallery_2"
+                            }]
+                        },
+                        {
+                            title: "Image 4",
+                            image_url: GALLERY[3].img,
+                            buttons: [{
+                                type: "postback",
+                                title: "View Image",
+                                payload: "view_gallery_3"
+                            }]
+                        },
+                        {
+                            title: "Image 5",
+                            image_url: GALLERY[4].img,
+                            buttons: [{
+                                type: "postback",
+                                title: "View Image",
+                                payload: "view_gallery_4"
+                            }]
+                        },
+                        {
+                            title: "Image 6",
+                            image_url: GALLERY[5].img,
+                            buttons: [{
+                                type: "postback",
+                                title: "View Image",
+                                payload: "view_gallery_5"
+                            }]
+                        },
+                        {
+                            title: "Image 7",
+                            image_url: GALLERY[6].img,
+                            buttons: [{
+                                type: "postback",
+                                title: "View Image",
+                                payload: "view_gallery_6"
+                            }]
+                        },
+                        {
+                            title: "Image 8",
+                            image_url: GALLERY[7].img,
+                            buttons: [{
+                                type: "postback",
+                                title: "View Image",
+                                payload: "view_gallery_7"
+                            }]
+                        },
+                        {
+                            title: "Image 9",
+                            image_url: GALLERY[8].img,
+                            buttons: [{
+                                type: "postback",
+                                title: "View Image",
+                                payload: "view_gallery_8"
+                            }]
+                        },
+                        {
+                            title: "Image 10",
+                            image_url: GALLERY[9].img,
+                            buttons: [{
+                                type: "postback",
+                                title: "View Image",
+                                payload: "view_gallery_9"
+                            }]
+                        }
+                    ]
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
 function sendTicketMessage(recipientId) {
     var messageData = {
         recipient: {
@@ -1585,7 +1803,7 @@ function sendWelcomeMessage(recipientId, showAR) {
     };
 
     callSendAPI(messageData, function() {
-        sendNotificationMessage(recipientId, showAR);
+        sendGifMessage(recipientId, showAR);
     });
 }
 
@@ -1829,7 +2047,7 @@ function callSendAPI(messageData, callback) {
 * Call the Broadcast API
 *
 */
-function callBroadcastAPI(messageData, callback) {
+function callBroadcastAPI(messageData, callback, label, timestamp) {
     PAGE_ACCESS_TOKENS.forEach(function(pageAccessToken) {
         request({
             uri: 'https://graph.facebook.com/v2.11/me/message_creatives',
@@ -1844,16 +2062,21 @@ function callBroadcastAPI(messageData, callback) {
                 if (messageId) {
                     console.log("Successfully sent message with id %s to recipient %s",
                     messageId);
+                    var body = {
+                        message_creative_id: messageId,
+                        notification_type: "REGULAR",
+                        messaging_type: "MESSAGE_TAG"
+                    };
+
+                    if (label) { body.custom_label_id = label; }
+
+                    if (timestamp) { body.schedule_time = timestamp; }
 
                     request({
                         uri: 'https://graph.facebook.com/v2.11/me/broadcast_messages',
                         qs: { access_token: pageAccessToken },
                         method: 'POST',
-                        json: {
-                            message_creative_id: messageId,
-                            notification_type: "REGULAR",
-                            messaging_type: "MESSAGE_TAG"
-                        }
+                        json: body
                     }, function (error, response, body) {
                         if (!error && response.statusCode == 200) {
                             var messageId = body.broadcast_id;
@@ -1864,7 +2087,7 @@ function callBroadcastAPI(messageData, callback) {
                             }
 
                             if (callback) {
-                                callback(recipientId);
+                                callback();
                             }
                         } else {
                             console.error("Failed calling Broadcast API", response.statusCode, response.statusMessage, body.error);
@@ -1873,6 +2096,54 @@ function callBroadcastAPI(messageData, callback) {
                 }
             } else {
                 console.error("Failed calling Broadcast API", response.statusCode, response.statusMessage, body.error);
+            }
+        });
+    });
+}
+
+/*
+* Create broadcast label
+*
+*/
+function createBroadcastLabel(psid, callback) {
+    var labelName = '24-hour-msg-'+psid+'-'+(Date.now());
+    PAGE_ACCESS_TOKENS.forEach(function(pageAccessToken) {
+        request({
+            uri: 'https://graph.facebook.com/v2.11/me/custom_labels',
+            qs: { access_token: pageAccessToken },
+            method: 'POST',
+            json: { name: labelName }
+        }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var id = body.id;
+
+                if (id) {
+                    console.log("Successfully created label with id %s",id);
+
+                    request({
+                        uri: 'https://graph.facebook.com/v2.11/' + id + '/label',
+                        qs: { access_token: pageAccessToken },
+                        method: 'POST',
+                        json: { user: psid }
+                    }, function (error, response, body) {
+                        if (!error && response.statusCode == 200) {
+                            var messageId = body.broadcast_id;
+
+                            if (messageId) {
+                                console.log("Successfully associated label id %s to recipient %s",
+                                messageId, psid);
+                            }
+
+                            if (callback) {
+                                callback(id);
+                            }
+                        } else {
+                            console.error("Failed associating psid to label", response.statusCode, response.statusMessage, body.error);
+                        }
+                    });
+                }
+            } else {
+                console.error("Failed creating label", response.statusCode, response.statusMessage, body.error);
             }
         });
     });

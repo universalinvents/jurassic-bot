@@ -48,7 +48,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
           "call_to_actions": [
               {
                   "type":"web_url",
-                  "title":"Buy Tickets",
+                  "title":"Get Tickets",
                   "url":"https://mobile.fandango.com/jurassic-world-fallen-kingdom-203382/movie-times",
                   "webview_height_ratio":"full"
               },
@@ -80,3 +80,21 @@ curl -X POST -H "Content-Type: application/json" -d '{
     }
   }
 }' "https://graph.facebook.com/v2.6/me/message_attachments?access_token=
+
+
+curl -X POST -H "Content-Type: application/json" -d '{
+  "message":{
+    "attachment":{
+      "type":"image",
+      "payload":{
+        "is_reusable": true,
+        "url":"https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/NowPlaying.gif"
+      }
+    }
+  }
+}' "https://graph.facebook.com/v2.6/me/message_attachments?access_token=EAACfutbOvNwBAFvOoC1C29PMLlrV9T95i6hfmEVaXxRS4S4QtKQH314K1izWWPlYWddaBXTYmIIVwXMZC7dKQnzFC2jQE73ge5k8FfZBw99fjUiMELLFBZBKhmHCXQ9IlNZAKN7ZAJNjSAaCmocczsZAvraLugZBXiffTnAjdot0AZDZD"
+
+curl  \
+  -F 'message={"attachment":{"type":"image", "payload":{"is_reusable":true}}}' \
+  -F 'filedata=@/Users/a206549143/Downloads/Files/2482_D046_00071RV2_v1_current.JPG;type=image/png' \
+  "https://graph.facebook.com/v2.6/me/message_attachments?access_token=EAACfutbOvNwBAFvOoC1C29PMLlrV9T95i6hfmEVaXxRS4S4QtKQH314K1izWWPlYWddaBXTYmIIVwXMZC7dKQnzFC2jQE73ge5k8FfZBw99fjUiMELLFBZBKhmHCXQ9IlNZAKN7ZAJNjSAaCmocczsZAvraLugZBXiffTnAjdot0AZDZD"
