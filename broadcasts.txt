@@ -96,5 +96,5 @@ curl -X POST -H "Content-Type: application/json" -d '{
 
 curl  \
   -F 'message={"attachment":{"type":"image", "payload":{"is_reusable":true}}}' \
-  -F 'filedata=@/Users/a206549143/Downloads/Files/2482_D046_00071RV2_v1_current.JPG;type=image/png' \
+  -F 'filedata=@/Users/a206549143/Downloads/Files/NowPlayig-smaller.gif;type=image/png' \
   "https://graph.facebook.com/v2.6/me/message_attachments?access_token=EAACfutbOvNwBAFvOoC1C29PMLlrV9T95i6hfmEVaXxRS4S4QtKQH314K1izWWPlYWddaBXTYmIIVwXMZC7dKQnzFC2jQE73ge5k8FfZBw99fjUiMELLFBZBKhmHCXQ9IlNZAKN7ZAJNjSAaCmocczsZAvraLugZBXiffTnAjdot0AZDZD"

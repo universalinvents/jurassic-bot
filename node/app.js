@@ -1249,7 +1249,7 @@ function sendGifMessage(recipientId, showAR) {
                     elements: [
                         {
                             media_type: 'image',
-                            attachment_id: '259707654580855'
+                            attachment_id: '262188930999394'
                         }
                     ]
                 }
