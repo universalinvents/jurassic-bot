@@ -1,7 +1,7 @@
 {
-    "appSecret": "0c963714dc3edfe0be5614d7f6506de4",
+    "appSecret": "a5a3e0ebb55cbae38c9331d9579eed49",
     "pageAccessTokens": [
-        "EAACfutbOvNwBAEBJUyYZAbCy1WUjgoYZBJ9auIBFeAvkTHGsU4a35EogbMDzuqoVWAAgljNG9kh0IrUabbbos1FZBv2EtI59CiMuxMsc1A0MxpFCYhaDKs9oZChF6ZCU6aE5KbwWAOj1G6HHUMkpJHaJXff1gcaTFIs3XyvZCFMAZDZD"
+        "EAAZAKYpsaC3oBACheVGbCcf27ZBnlatZBoEPdOgvaekA6hMVlZB0gJgKQlimVFBvIQy6yE7xVrmFyiZC4aeZCjX127wZBd1HZCZCPfyiB9tZCE6cHhiKkvVSLf907EFZA18qE8EoaoR3JDWiqvwT87o7erAo7q0zFKEocVMk0xcVToMfAZDZD"
     ],
     "validationToken": "TOKEN",
     "serverURL": "https://lazy-husky-83.localtunnel.me",

@@ -28,38 +28,45 @@ const QUICK_REPLIES = [
     },
     {
         "content_type":"text",
+        "title":"News",
+        "payload":"news",
+        "image_url": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/picture.png"
+    },
+    {
+        "content_type":"text",
         "title":"Trailers",
         "payload":"trailers",
-        "image_url": "https://d30y9cdsu7xlg0.cloudfront.net/png/17793-200.png"
+        "image_url": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Trailers+.png"
     },
     {
         "content_type":"text",
         "title":"Photo Gallery",
         "payload":"gallery",
-        "image_url": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/picture.png"
+        "image_url": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Photo+Gallery+.png"
     },
     {
         "content_type":"text",
         "title":"Games",
         "payload":"games",
-        "image_url": "https://i.pinimg.com/originals/97/3e/e2/973ee216a3181a881bca360d7b0fee6a.png"
+        "image_url": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Games+.png"
     }
 ];
 
 const GALLERY = [
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/1.png', id: '259770397907914' },
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2.png', id: '259771317907822' },
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_D067_00295_v1_current.jpg', id: '259771597907794' },
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_FPT2_00147E_0147R_GRD_COMP_v1_current.JPG', id: '259771941241093' },
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_SB_00012R_v1_current.JPG', id: '259772131241074' },
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TP2_00070R_v1_current.JPG', id:
-    '259772301241057' },
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TPT_00010R_GRD_v1_current.JPG', id: '259772521241035' },
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/8.png', id: '259772851241002' },
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TP_00001R_v1_current.JPG', id: '259773234574297' },
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TP_00054R_v1_current.JPG', id: '259773401240947' },
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TP_00073R_v1_current.JPG', id: '259773574574263' },
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TRLR_V47_C03_G01_863760R_v1_current.JPG', id: '259773791240908' }
+
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2.png', id: '261684711051363' },
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_D067_00295_v1_current.jpg', id: '261686691051165' },
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_FPT2_00147E_0147R_GRD_COMP_v1_current.JPG', id: '261687121051122' },
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_SB_00012R_v1_current.JPG', id: '261687497717751' },
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TP2_00070R_v1_current.JPG', id: '261687941051040' },
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TPT_00010R_GRD_v1_current.JPG', id: '261688254384342' },
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/8.png', id: '261688664384301' },
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TP_00001R_v1_current.JPG', id: '261689134384254' },
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/1.png', id: '261689497717551' },
+
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TP_00054R_v1_current.JPG', id: '261689971050837' },
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TP_00073R_v1_current.JPG', id: '261690311050803' },
+    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TRLR_V47_C03_G01_863760R_v1_current.JPG', id: '261690671050767' }
 ];
 
 var app = express();
@@ -537,6 +544,12 @@ function receivedPostback(event) {
                 config.get('arCodes').indexOf(event.postback.referral.ref) > -1) {
                 sendWelcomeMessage(senderID, true);
             }
+            else if (event.postback.referral && event.postback.referral.ref == 'dna-1') {
+                sendTextMessage(
+                    senderID,
+                    "You've collected 1 part of the DNA."
+                );
+            }
             else {
                 sendWelcomeMessage(senderID);
             }
@@ -554,13 +567,13 @@ function receivedPostback(event) {
         case 'watch_trailer_0':
             sendTrailerMessage(
                 senderID,
-                '259667444584876'
+                '261691797717321'
             );
             break;
         case 'watch_trailer_1':
             sendTrailerMessage(
                 senderID,
-                '259670074584613'
+                '261692161050618'
             );
             break;
         case 'view_gallery_0':
@@ -630,6 +643,10 @@ function receivedPostback(event) {
             );
             break;
 
+        case 'enter_contest':
+            sendEnterContestMessage(senderID);
+            break;
+
         default:
             // When a postback is called, we'll send a message back to the sender to
             // let them know it was successful
@@ -662,17 +679,22 @@ function receiveReferral(event) {
         }
 
         switch(payload.ref) {
-            case 'contest-loser':
-                sendContestMessage(
+            case 'dna-1':
+                sendTextMessage(
                     senderID,
-                    "Sorry, you didn't win this week. "+
-                    "Don't lose hope though. Try again next week!"
+                    "You've collected 1 part of the DNA."
                 );
                 break;
-            case 'contest-winner':
+            case 'dna-2':
+                sendTextMessage(
+                    senderID,
+                    "You've collected 2 parts of the DNA."
+                );
+                break;
+            case 'dna-3':
                 sendContestMessage(
                     senderID,
-                    "Congratulations! You are this week's winner!!"
+                    "You've collected the full DNA strand!"
                 );
                 break;
             default:
@@ -1190,27 +1212,8 @@ function sendQuickActions(recipientId) {
             id: recipientId
         },
         message: {
-            text: "What do you need",
-            quick_replies: [
-                {
-                    "content_type":"text",
-                    "title":"News",
-                    "payload":"news",
-                    "image_url": "https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/news-512.png"
-                },
-                {
-                    "content_type":"text",
-                    "title":"Trailers",
-                    "payload":"trailers",
-                    "image_url": "https://d30y9cdsu7xlg0.cloudfront.net/png/17793-200.png"
-                },
-                {
-                    "content_type":"text",
-                    "title":"Games",
-                    "payload":"games",
-                    "image_url": "https://i.pinimg.com/originals/97/3e/e2/973ee216a3181a881bca360d7b0fee6a.png"
-                }
-            ]
+            text: "What do you need?",
+            quick_replies: QUICK_REPLIES
         }
     };
 
@@ -1249,7 +1252,7 @@ function sendGifMessage(recipientId, showAR) {
                     elements: [
                         {
                             media_type: 'image',
-                            attachment_id: '262188930999394'
+                            attachment_id: '261774171042417'
                         }
                     ]
                 }
@@ -1915,7 +1918,7 @@ function sendAR1Message(recipientId) {
                     template_type: "media",
                     elements: [{
                         media_type: "image",
-                        attachment_id: "247200862498201",
+                        attachment_id: "261694911050343",
                         buttons: [{
                             title: "Unlock",
                             type: "web_url",
@@ -1995,12 +1998,51 @@ function sendContestMessage(recipientId, message) {
             id: recipientId
         },
         message: {
-            text: message,
-            quick_replies: QUICK_REPLIES
+            text: message
         }
     };
 
-    callSendAPI(messageData);
+    callSendAPI(messageData, function() {
+        var messageData = {
+            recipient: {
+                id: recipientId
+            },
+            message: {
+                quick_replies: QUICK_REPLIES,
+                attachment: {
+                    type: "template",
+                    payload: {
+                        template_type: "button",
+                        text: "Click here to enter the Contest.  We'll let you know if you win.",
+                        buttons:[{
+                            type: "postback",
+                            title: "Enter Contest",
+                            payload: "enter_contest"
+                        }]
+                    }
+                }
+            }
+        };
+        callSendAPI(messageData);
+    });
+}
+
+function sendEnterContestMessage(recipientId) {
+    sendQuickActions(recipientId);
+
+    setTimeout(function() {
+        var messageData = {
+            recipient: {
+                id: recipientId
+            },
+            message: {
+                text: "Congratulations!! You've won the Contest."
+            }
+        };
+        callSendAPI(messageData, function() {
+            sendImageMesage(recipientId, 261808601038974);
+        });
+    }, 10000);
 }
 
 /*
