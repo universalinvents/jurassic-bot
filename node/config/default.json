@@ -1,11 +1,10 @@
 {
-    "appSecret": "a5a3e0ebb55cbae38c9331d9579eed49",
+    "appSecret": "${APP_SECRET}",
     "pageAccessTokens": [
-        "EAAZAKYpsaC3oBACheVGbCcf27ZBnlatZBoEPdOgvaekA6hMVlZB0gJgKQlimVFBvIQy6yE7xVrmFyiZC4aeZCjX127wZBd1HZCZCPfyiB9tZCE6cHhiKkvVSLf907EFZA18qE8EoaoR3JDWiqvwT87o7erAo7q0zFKEocVMk0xcVToMfAZDZD"
+        "${PAGE_ACCESS_TOKEN}"
     ],
     "validationToken": "TOKEN",
-    "serverURL": "https://lazy-husky-83.localtunnel.me",
-    "googleMapKey": "AIzaSyDXwnZUnf-IUmUQPHHrtQsgiEBaSwVed6k",
+    "googleMapKey": "${GOOGLE_MAP_KEY}",
     "locations": [
         {
             "name": "Walmart, Burbank",
@@ -50,5 +49,60 @@
         "digi-07",
         "digi-08",
         "digi-09"
-    ]
+    ],
+    "imgGallery": [
+        { "img": "https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2.png", "id": "261684711051363" },
+        { "img": "https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_D067_00295_v1_current.jpg", "id": "261686691051165" },
+        { "img": "https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_FPT2_00147E_0147R_GRD_COMP_v1_current.JPG", "id": "261687121051122" },
+        { "img": "https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_SB_00012R_v1_current.JPG", "id": "261687497717751" },
+        { "img": "https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TP2_00070R_v1_current.JPG", "id": "261687941051040" },
+        { "img": "https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TPT_00010R_GRD_v1_current.JPG", "id": "261688254384342" },
+        { "img": "https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/8.png", "id": "261688664384301" },
+        { "img": "https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TP_00001R_v1_current.JPG", "id": "261689134384254" },
+        { "img": "https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/1.png", "id": "261689497717551" },
+        { "img": "https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TP_00054R_v1_current.JPG", "id": "261689971050837" },
+        { "img": "https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TP_00073R_v1_current.JPG", "id": "261690311050803" },
+        { "img": "https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TRLR_V47_C03_G01_863760R_v1_current.JPG", "id": "261690671050767" }
+    ],
+    "trailers": [
+        { "img": "https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/trailer_thumbnail.png", "id": "261691797717321" },
+        { "img": "https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/behind_thumbnail.png", "id": "261692161050618" }
+    ],
+    "promo": {
+        "imageUrl": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Screen+Shot+2018-05-30+at+3.33.24+PM.png",
+        "gifId": "261774171042417"
+    },
+    "gameAssets": {
+        "itunesStoreUrl": "https://itunes.apple.com/ca/app/jurassic-world-alive/id1231085864",
+        "imageUrl": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Jurassic-World-Alive.jpg"
+    },
+    "redirectUrl": "https://s3.us-east-2.amazonaws.com/jurassic-bot/games-ui/index.html?u=",
+    "newsArticles": {
+        "article1": {
+            "articleUrl": "https://variety.com/2018/film/news/fandango-prop-store-jurassic-world-fallen-kingdom-1202811346/",
+            "imageUrl": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/jurassic-world-indominus-rex-head+(1).jpg"
+        },
+        "article2": {
+            "articleUrl": "https://variety.com/2018/gaming/news/jurassic-world-alive-trailer-1202825047/",
+            "imageUrl": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/jurassic-world-alive-feature.jpg"
+        },
+        "article3": {
+            "articleUrl": "https://culturedvultures.com/jurassic-world-evolution-6-quick-facts-you-should-know/",
+            "imageUrl": "https://41zxbw463fq733z1kl101n01-wpengine.netdna-ssl.com/wp-content/uploads/2018/05/Jurassic-World-Evolution-750x430.jpg"
+        }
+    },
+    "showTimesUrl": "https://mobile.fandango.com/jurassic-world-fallen-kingdom-203382/movie-times",
+    "posterUrl": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/JURASSIC_WORLD.jpg",
+    "moviesAnywhereUrl": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/logo.png",
+    "redeemUrl": "https://s3.us-east-2.amazonaws.com/jurassic-bot/games-ui/redeem.html",
+    "enterContestImageId": "261808601038974",
+    "arStudioPlayerUrl": "https://itunes.apple.com/us/app/ar-studio-player/id1231451896?mt=8",
+    "quickReplyImageUrls": {
+        "tickets": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Fandango.jpg",
+        "news": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/picture.png",
+        "trailers": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Trailers+.png",
+        "gallery": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Photo+Gallery+.png",
+        "games": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Games+.png"
+    },
+    "arImageId": "261694911050343"
 }
