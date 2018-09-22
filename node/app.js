@@ -1,13 +1,3 @@
-/*
-* Copyright 2016-present, Facebook, Inc.
-* All rights reserved.
-*
-* This source code is licensed under the license found in the
-* LICENSE file in the root directory of this source tree.
-*
-*/
-
-/* jshint node: true, devel: true */
 'use strict';
 
 const
@@ -19,56 +9,7 @@ const
     request = require('request'),
     geolib = require('geolib');
 
-const QUICK_REPLIES = [
-    {
-        "content_type":"text",
-        "title":"Tickets",
-        "payload":"tickets",
-        "image_url": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Fandango.jpg"
-    },
-    {
-        "content_type":"text",
-        "title":"News",
-        "payload":"news",
-        "image_url": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/picture.png"
-    },
-    {
-        "content_type":"text",
-        "title":"Trailers",
-        "payload":"trailers",
-        "image_url": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Trailers+.png"
-    },
-    {
-        "content_type":"text",
-        "title":"Photo Gallery",
-        "payload":"gallery",
-        "image_url": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Photo+Gallery+.png"
-    },
-    {
-        "content_type":"text",
-        "title":"Games",
-        "payload":"games",
-        "image_url": "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Games+.png"
-    }
-];
-
-const GALLERY = [
-
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2.png', id: '261684711051363' },
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_D067_00295_v1_current.jpg', id: '261686691051165' },
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_FPT2_00147E_0147R_GRD_COMP_v1_current.JPG', id: '261687121051122' },
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_SB_00012R_v1_current.JPG', id: '261687497717751' },
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TP2_00070R_v1_current.JPG', id: '261687941051040' },
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TPT_00010R_GRD_v1_current.JPG', id: '261688254384342' },
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/8.png', id: '261688664384301' },
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TP_00001R_v1_current.JPG', id: '261689134384254' },
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/1.png', id: '261689497717551' },
-
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TP_00054R_v1_current.JPG', id: '261689971050837' },
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TP_00073R_v1_current.JPG', id: '261690311050803' },
-    { img: 'https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/gallery/2482_TRLR_V47_C03_G01_863760R_v1_current.JPG', id: '261690671050767' }
-];
-
+// Setup the Server
 var app = express();
 app.set('port', process.env.PORT || 6000);
 app.set('view engine', 'ejs');
@@ -76,34 +17,80 @@ app.use(bodyParser.json({ verify: verifyRequestSignature }));
 app.use(express.static('public'));
 
 /*
-* Be sure to setup your config values before running this code. You can
-* set them using environment variables or modifying the config file in /config.
+* Be sure to setup your config values (config/default.json)before running this code.
 *
 */
 
 // App Secret can be retrieved from the App Dashboard
-const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ?
-process.env.MESSENGER_APP_SECRET :
-config.get('appSecret');
+const APP_SECRET = config.get('appSecret');
 
 // Arbitrary value used to validate a webhook
-const VALIDATION_TOKEN = (process.env.MESSENGER_VALIDATION_TOKEN) ?
-(process.env.MESSENGER_VALIDATION_TOKEN) :
-config.get('validationToken');
+const VALIDATION_TOKEN = config.get('validationToken');
 
 // Generate a page access token for your page from the App Dashboard
 const PAGE_ACCESS_TOKENS = config.get('pageAccessTokens');
 
-// URL where the app is running (include protocol). Used to point to scripts and
-// assets located at this address.
-const SERVER_URL = (process.env.SERVER_URL) ?
-(process.env.SERVER_URL) :
-config.get('serverURL');
+const GOOGLE_MAP_KEY = config.get('googleMapKey');
+const LOCATIONS = config.get('locations');
+const AR_CODES = config.get('arCodes');
+const GALLERY = config.get('imgGallery');
+const TRAILERS = config.get('trailers');
+const PROMO = config.get('promo');
+const GAME_ASSETS = config.get('gameAssets');
+const REDIRECT_URL = config.get('redirectUrl');
+const NEWS_ARTICLES = config.get('newsArticles');
+const SHOWTIMES_URL = config.get('showTimesUrl');
+const POSTER_URL = config.get('posterUrl');
+const MOVIES_ANYWHERE_URL = config.get('moviesAnywhereUrl');
+const REDEEM_URL = config.get('redeemUrl');
+const ENTER_CONTEST_IMAGE_ID = config.get('enterContestImageId');
+const AR_STUDIO_PLAYER_URL = config.get('arStudioPlayerUrl');
+const QUICK_REPLY_IMAGE_URLS = config.get('quickReplyImageUrls');
+const AR_IMAGE_ID = config.get('arImageId');
 
-if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKENS && SERVER_URL)) {
+// These should return after every message
+const QUICK_REPLIES = [
+    {
+        "content_type":"text",
+        "title":"Tickets",
+        "payload":"tickets",
+        "image_url": QUICK_REPLY_IMAGE_URLS.tickets
+    },
+    {
+        "content_type":"text",
+        "title":"News",
+        "payload":"news",
+        "image_url": QUICK_REPLY_IMAGE_URLS.news
+    },
+    {
+        "content_type":"text",
+        "title":"Trailers",
+        "payload":"trailers",
+        "image_url": QUICK_REPLY_IMAGE_URLS.trailers
+    },
+    {
+        "content_type":"text",
+        "title":"Photo Gallery",
+        "payload":"gallery",
+        "image_url": QUICK_REPLY_IMAGE_URLS.gallery
+    },
+    {
+        "content_type":"text",
+        "title":"Games",
+        "payload":"games",
+        "image_url": QUICK_REPLY_IMAGE_URLS.games
+    }
+];
+
+if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKENS
+    && GOOGLE_MAP_KEY && LOCATIONS && AR_CODES && GALLERY && TRAILERS && PROMO
+    && GAME_ASSETS && REDIRECT_URL && NEWS_ARTICLES && SHOWTIMES_URL && POSTER_URL
+    && MOVIES_ANYWHERE_URL && REDEEM_URL && ENTER_CONTEST_IMAGE_ID
+    && AR_STUDIO_PLAYER_URL && QUICK_REPLY_IMAGE_URLS && AR_IMAGE_ID)) {
     console.error("Missing config values");
     process.exit(1);
 }
+
 
 /*
 * Use your own validation token. Check that the token used in the Webhook
@@ -112,10 +99,11 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKENS && SERVER_URL)) {
 */
 app.get('/webhook', function(req, res) {
     if (req.query['hub.mode'] === 'subscribe' &&
-    req.query['hub.verify_token'] === VALIDATION_TOKEN) {
+        req.query['hub.verify_token'] === VALIDATION_TOKEN) {
         console.log("Validating webhook");
         res.status(200).send(req.query['hub.challenge']);
-    } else {
+    }
+    else {
         console.error("Failed validation. Make sure the validation tokens match.");
         res.sendStatus(403);
     }
@@ -144,21 +132,26 @@ app.post('/webhook', function (req, res) {
             pageEntry.messaging.forEach(function(messagingEvent) {
                 if (messagingEvent.optin) {
                     receivedAuthentication(messagingEvent);
-                } else if (messagingEvent.message) {
+                }
+                else if (messagingEvent.message) {
                     receivedMessage(messagingEvent);
-                } else if (messagingEvent.delivery) {
+                }
+                else if (messagingEvent.delivery) {
                     receivedDeliveryConfirmation(messagingEvent);
-                } else if (messagingEvent.postback) {
+                }
+                else if (messagingEvent.postback) {
                     receivedPostback(messagingEvent);
-                } else if (messagingEvent.read) {
+                }
+                else if (messagingEvent.read) {
                     receivedMessageRead(messagingEvent);
-                } else if (messagingEvent.account_linking) {
-                    receivedAccountLink(messagingEvent);
-                } else if (messagingEvent.referral) {
+                }
+                else if (messagingEvent.referral) {
                     receiveReferral(messagingEvent);
-                } else if (messagingEvent.payment) {
+                }
+                else if (messagingEvent.payment) {
                     receivedPayment(messagingEvent);
-                } else {
+                }
+                else {
                     console.log("Webhook received unknown messagingEvent: ", messagingEvent);
                 }
             });
@@ -210,7 +203,8 @@ function verifyRequestSignature(req, res, buf) {
         // For testing, let's log an error. In production, you should throw an
         // error.
         console.error("Couldn't validate the signature.");
-    } else {
+    }
+    else {
         var elements = signature.split('=');
         var method = elements[0];
         var signatureHash = elements[1];
@@ -261,12 +255,6 @@ function receivedAuthentication(event) {
 * object format can vary depending on the kind of message that was received.
 * Read more at https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-received
 *
-* For this example, we're going to echo any text that we get. If we get some
-* special keywords ('button', 'generic', 'receipt'), then we'll send back
-* examples of those bubbles to illustrate the special message bubbles we've
-* created. If we receive a message with an attachment (image, video, audio),
-* then we'll simply confirm that we've received the attachment.
-*
 */
 function receivedMessage(event) {
     var senderID = event.sender.id;
@@ -282,48 +270,49 @@ function receivedMessage(event) {
     var messageId = message.mid;
     var appId = message.app_id;
     var metadata = message.metadata;
-
-    // You may get a text or attachment but not both
     var messageText = message.text;
     var messageAttachments = message.attachments;
     var quickReply = message.quick_reply;
     var isLocation = message.mid && message.attachments
-    && message.attachments.length > 0
-    && message.attachments[0].payload
-    && message.attachments[0].payload.coordinates;
+        && message.attachments.length > 0
+        && message.attachments[0].payload
+        && message.attachments[0].payload.coordinates;
 
     if (isEcho) {
         // Just logging message echoes to console
         console.log("Received echo for message %s and app %d with metadata %s",
         messageId, appId, metadata);
         return;
-    } else if (quickReply) {
+    }
+    else if (quickReply) {
         var quickReplyPayload = quickReply.payload;
         console.log("Quick reply for message %s with payload %s",
         messageId, quickReplyPayload);
 
         switch(quickReplyPayload) {
             case 'tickets':
-            sendTicketMessage(senderID);
-            break;
+                sendTicketMessage(senderID);
+                break;
             case 'trailers':
-            sendTrailerList(senderID);
-            break;
+                sendTrailerList(senderID);
+                break;
             case 'news':
-            sendNewsMessage(senderID);
-            break;
+                sendNewsMessage(senderID);
+                break;
             case 'games':
-            sendGamesMessage(senderID);
-            break;
+                sendGamesMessage(senderID);
+                break;
             case 'gallery':
-            sendGalleryMessage(senderID);
-            break;
+                sendGalleryMessage(senderID);
+                break;
         }
         return;
     }
     else if (isLocation) {
+        // If the user sent their location, then send back a list of configured
+        // stores sorted by closest distance.
         var location = message.attachments[0].payload.coordinates;
-        var stores = config.get('locations');
+        var stores = LOCATIONS;
         stores.forEach(function(store) {
             var locationSplit = store.location.split(",");
             var otherLoc = { latitude: locationSplit[0], longitude: locationSplit[1] };
@@ -339,17 +328,15 @@ function receivedMessage(event) {
             else if (a.distance == b.distance) { return 0; }
         });
 
-        console.log(stores.slice(0,3))
-
-        sendStoresLocationMessage(senderID, stores.slice(0,3), location.lat+","+location.long);
+        sendStoresLocationMessage(
+            senderID, stores.slice(0,3), location.lat+","+location.long
+        );
     }
 
     if (messageText) {
-
         // If we receive a text message, check to see if it matches any special
         // keywords and send back the corresponding example. Otherwise, just echo
         // the text we received.
-        console.log(messageText)
 
         var parsedMsg = messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase();
         console.log(parsedMsg);
@@ -362,132 +349,55 @@ function receivedMessage(event) {
         switch (parsedMsg) {
 
             case 'get started':
-            sendWelcomeMessage(senderID);
-            break;
-
+                sendWelcomeMessage(senderID);
+                break;
             case 'tickets':
                 sendTicketMessage(senderID);
-            break;
-
+                break;
             case 'trailers':
                 sendTrailerList(senderID);
-            break;
-
+                break;
             case 'news':
                 sendNewsMessage(senderID);
-            break;
-
+                break;
             case 'help':
             case 'help me':
                 sendGetStarted(senderID);
-            break;
-
+                break;
             case 'ar':
                 sendAR1Message(senderID);
-            break;
-
+                break;
             case 'where to buy':
             case 'where to buy?':
             case 'location':
             case 'locations':
                 sendLocationMessage(senderID);
-            break;
-
+                break;
             case 't1':
                 sendT1Message();
-            break;
-
+                break;
             case 't2':
                 sendT2Message();
-            break;
-
+                break;
             case 't3':
                 sendT3Message();
-            break;
-
+                break;
             case 'ma':
                 sendMoviesAnywhereMessage(senderID);
-            break;
-
+                break;
             case 'buy':
                 sendPaymentMessage(senderID);
-            break;
-
+                break;
             case "whats new":
                 sendNewsMessage(senderID);
-            break;
-
+                break;
             case 'game':
             case 'games':
                 sendGamesMessage(senderID);
-            break;
-
-            case 'where to buy?':
-                console.log('where to buy? sent');
-            break;
-
-            case 'hello':
-            case 'hi':
-                sendHiMessage(senderID);
-            break;
-
-            case 'image':
-                requiresServerURL(sendImageMessage, [senderID]);
-            break;
-
-            case 'gif':
-                requiresServerURL(sendGifMessage, [senderID]);
-            break;
-
-            case 'audio':
-                requiresServerURL(sendAudioMessage, [senderID]);
-            break;
-
-            case 'video':
-                requiresServerURL(sendVideoMessage, [senderID]);
-            break;
-
-            case 'file':
-                requiresServerURL(sendFileMessage, [senderID]);
-            break;
-
-            case 'button':
-                sendButtonMessage(senderID);
-            break;
-
-            case 'generic':
-                requiresServerURL(sendGenericMessage, [senderID]);
-            break;
-
-            case 'receipt':
-                requiresServerURL(sendReceiptMessage, [senderID]);
-            break;
-
-            case 'quick reply':
-                sendQuickReply(senderID);
-            break;
-
-            case 'read receipt':
-                sendReadReceipt(senderID);
-            break;
-
-            case 'typing on':
-                sendTypingOn(senderID);
-            break;
-
-            case 'typing off':
-                sendTypingOff(senderID);
-            break;
-
-            case 'account linking':
-                requiresServerURL(sendAccountLinking, [senderID]);
-            break;
-
+                break;
             default:
                 sendTextMessage(senderID, messageText);
         }
-    } else if (messageAttachments) {
-        // sendTextMessage(senderID, "Message with attachment received");
     }
 }
 
@@ -495,8 +405,8 @@ function receivedMessage(event) {
 /*
 * Delivery Confirmation Event
 *
-* This event is sent to confirm the delivery of a message. Read more about
-* these fields at https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-delivered
+* This event is sent to confirm the delivery of a message.
+* https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-delivered
 *
 */
 function receivedDeliveryConfirmation(event) {
@@ -526,7 +436,6 @@ function receivedDeliveryConfirmation(event) {
 *
 */
 function receivedPostback(event) {
-    console.log(event);
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
     var timeOfPostback = event.timestamp;
@@ -536,12 +445,12 @@ function receivedPostback(event) {
     var payload = event.postback.payload;
 
     console.log("Received postback for user %d and page %d with payload '%s' " +
-    "at %d", senderID, recipientID, payload, timeOfPostback);
-    console.log(payload);
+        "at %d", senderID, recipientID, payload, timeOfPostback);
+
     switch(payload) {
         case 'get_started':
             if (event.postback.referral &&
-                config.get('arCodes').indexOf(event.postback.referral.ref) > -1) {
+                AR_CODES.indexOf(event.postback.referral.ref) > -1) {
                 sendWelcomeMessage(senderID, true);
             }
             else if (event.postback.referral && event.postback.referral.ref == 'dna-1') {
@@ -555,7 +464,6 @@ function receivedPostback(event) {
             }
             break;
         case 'set_notifications_on':
-            console.log('Setting subscription notifications on');
             sendGetStarted(senderID);
             break;
         case 'store_locations':
@@ -567,13 +475,13 @@ function receivedPostback(event) {
         case 'watch_trailer_0':
             sendTrailerMessage(
                 senderID,
-                '261691797717321'
+                TRAILERS[0].id
             );
             break;
         case 'watch_trailer_1':
             sendTrailerMessage(
                 senderID,
-                '261692161050618'
+                TRAILERS[1].id
             );
             break;
         case 'view_gallery_0':
@@ -659,6 +567,9 @@ function receivedPostback(event) {
 * Referral Event
 *
 * This event is called when a parametric code was scanned
+* See here to generate a parametric code:
+* https://developers.facebook.com/docs/messenger-platform/discovery/messenger-codes/
+*
 */
 function receiveReferral(event) {
     var senderID = event.sender.id;
@@ -668,12 +579,12 @@ function receiveReferral(event) {
     var payload = event.referral;
 
     console.log("Received referral for user %d and page %d with payload '%s' ",
-    senderID, recipientID, payload);
+        senderID, recipientID, payload);
 
     // Parametric code scanned
     if (payload.source == 'MESSENGER_CODE') {
-        console.log(payload.ref);
-        if (config.get('arCodes').indexOf(payload.ref) > -1) {
+
+        if (AR_CODES.indexOf(payload.ref) > -1) {
             sendAR1Message(senderID);
             return;
         }
@@ -697,8 +608,6 @@ function receiveReferral(event) {
                     "You've collected the full DNA strand!"
                 );
                 break;
-            default:
-                console.log('pie');
         }
     }
 }
@@ -709,7 +618,6 @@ function receiveReferral(event) {
 * This event is called when a payment was received
 */
 function receivedPayment(event) {
-    console.log(event);
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
     var timeOfPostback = event.timestamp;
@@ -719,7 +627,7 @@ function receivedPayment(event) {
     var payload = event.payment;
 
     console.log("Received postback for user %d and page %d with payload '%s' " +
-    "at %d", senderID, recipientID, payload, timeOfPostback);
+        "at %d", senderID, recipientID, payload, timeOfPostback);
 
     sendMoviesAnywhereMessage(senderID);
 }
@@ -740,183 +648,9 @@ function receivedMessageRead(event) {
     var sequenceNumber = event.read.seq;
 
     console.log("Received message read event for watermark %d and sequence " +
-    "number %d", watermark, sequenceNumber);
+        "number %d", watermark, sequenceNumber);
 }
 
-/*
-* Account Link Event
-*
-* This event is called when the Link Account or UnLink Account action has been
-* tapped.
-* https://developers.facebook.com/docs/messenger-platform/webhook-reference/account-linking
-*
-*/
-function receivedAccountLink(event) {
-    var senderID = event.sender.id;
-    var recipientID = event.recipient.id;
-
-    var status = event.account_linking.status;
-    var authCode = event.account_linking.authorization_code;
-
-    console.log("Received account link event with for user %d with status %s " +
-    "and auth code %s ", senderID, status, authCode);
-}
-
-/*
-* If users came here through testdrive, they need to configure the server URL
-* in default.json before they can access local resources likes images/videos.
-*/
-function requiresServerURL(next, [recipientId, ...args]) {
-    if (SERVER_URL === "to_be_set_manually") {
-        var messageData = {
-            recipient: {
-                id: recipientId
-            },
-            message: {
-                text: `
-                We have static resources like images and videos available to test, but you need to update the code you downloaded earlier to tell us your current server url.
-                1. Stop your node server by typing ctrl-c
-                2. Paste the result you got from running "lt —port 5000" into your config/default.json file as the "serverURL".
-                3. Re-run "node app.js"
-                Once you've finished these steps, try typing “video” or “image”.
-                `
-            }
-        }
-
-        callSendAPI(messageData);
-    } else {
-        next.apply(this, [recipientId, ...args]);
-    }
-}
-
-function sendHiMessage(recipientId) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            text: `
-            Congrats on setting up your Messenger Bot!
-
-            Right now, your bot can only respond to a few words. Try out "quick reply", "typing on", "button", or "image" to see how they work. You'll find a complete list of these commands in the "app.js" file. Anything else you type will just be mirrored until you create additional commands.
-
-            For more details on how to create commands, go to https://developers.facebook.com/docs/messenger-platform/reference/send-api.
-            `
-        }
-    }
-
-    callSendAPI(messageData);
-}
-
-/*
-* Send an image using the Send API.
-*
-*/
-function sendImageMessage(recipientId) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            attachment: {
-                type: "image",
-                payload: {
-                    url: SERVER_URL + "/assets/rift.png"
-                }
-            }
-        }
-    };
-
-    callSendAPI(messageData);
-}
-
-// /*
-// * Send a Gif using the Send API.
-// *
-// */
-// function sendGifMessage(recipientId) {
-//     var messageData = {
-//         recipient: {
-//             id: recipientId
-//         },
-//         message: {
-//             attachment: {
-//                 type: "image",
-//                 payload: {
-//                     url: SERVER_URL + "/assets/instagram_logo.gif"
-//                 }
-//             }
-//         }
-//     };
-//
-//     callSendAPI(messageData);
-// }
-
-/*
-* Send audio using the Send API.
-*
-*/
-function sendAudioMessage(recipientId) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            attachment: {
-                type: "audio",
-                payload: {
-                    url: SERVER_URL + "/assets/sample.mp3"
-                }
-            }
-        }
-    };
-
-    callSendAPI(messageData);
-}
-
-/*
-* Send a video using the Send API.
-*
-*/
-function sendVideoMessage(recipientId) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            attachment: {
-                type: "video",
-                payload: {
-                    url: SERVER_URL + "/assets/allofus480.mov"
-                }
-            }
-        }
-    };
-
-    callSendAPI(messageData);
-}
-
-/*
-* Send a file using the Send API.
-*
-*/
-function sendFileMessage(recipientId) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            attachment: {
-                type: "file",
-                payload: {
-                    url: SERVER_URL + "/assets/test.txt"
-                }
-            }
-        }
-    };
-
-    callSendAPI(messageData);
-}
 
 /*
 * Send a text message using the Send API.
@@ -936,271 +670,6 @@ function sendTextMessage(recipientId, messageText) {
     callSendAPI(messageData);
 }
 
-/*
-* Send a button message using the Send API.
-*
-*/
-function sendButtonMessage(recipientId) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            attachment: {
-                type: "template",
-                payload: {
-                    template_type: "button",
-                    text: "This is test text",
-                    buttons:[{
-                        type: "web_url",
-                        url: "https://www.oculus.com/en-us/rift/",
-                        title: "Open Web URL"
-                    }, {
-                        type: "postback",
-                        title: "Trigger Postback",
-                        payload: "DEVELOPER_DEFINED_PAYLOAD"
-                    }, {
-                        type: "phone_number",
-                        title: "Call Phone Number",
-                        payload: "+16505551234"
-                    }, {
-                        type: "phone_number",
-                        title: "Call Phone Number",
-                        payload: "+16505551234"
-                    }]
-                }
-            }
-        }
-    };
-
-    callSendAPI(messageData);
-}
-
-/*
-* Send a Structured Message (Generic Message type) using the Send API.
-*
-*/
-function sendGenericMessage(recipientId) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            attachment: {
-                type: "template",
-                payload: {
-                    template_type: "generic",
-                    elements: [{
-                        title: "rift",
-                        subtitle: "Next-generation virtual reality",
-                        item_url: "https://www.oculus.com/en-us/rift/",
-                        image_url: SERVER_URL + "/assets/rift.png",
-                        buttons: [{
-                            type: "web_url",
-                            url: "https://www.oculus.com/en-us/rift/",
-                            title: "Open Web URL"
-                        }, {
-                            type: "postback",
-                            title: "Call Postback",
-                            payload: "Payload for first bubble",
-                        }],
-                    }, {
-                        title: "touch",
-                        subtitle: "Your Hands, Now in VR",
-                        item_url: "https://www.oculus.com/en-us/touch/",
-                        image_url: SERVER_URL + "/assets/touch.png",
-                        buttons: [{
-                            type: "web_url",
-                            url: "https://www.oculus.com/en-us/touch/",
-                            title: "Open Web URL"
-                        }, {
-                            type: "postback",
-                            title: "Call Postback",
-                            payload: "Payload for second bubble",
-                        }]
-                    }]
-                }
-            }
-        }
-    };
-
-    callSendAPI(messageData);
-}
-
-/*
-* Send a receipt message using the Send API.
-*
-*/
-function sendReceiptMessage(recipientId) {
-    // Generate a random receipt ID as the API requires a unique ID
-    var receiptId = "order" + Math.floor(Math.random()*1000);
-
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message:{
-            attachment: {
-                type: "template",
-                payload: {
-                    template_type: "receipt",
-                    recipient_name: "Peter Chang",
-                    order_number: receiptId,
-                    currency: "USD",
-                    payment_method: "Visa 1234",
-                    timestamp: "1428444852",
-                    elements: [{
-                        title: "Oculus Rift",
-                        subtitle: "Includes: headset, sensor, remote",
-                        quantity: 1,
-                        price: 599.00,
-                        currency: "USD",
-                        image_url: SERVER_URL + "/assets/riftsq.png"
-                    }, {
-                        title: "Samsung Gear VR",
-                        subtitle: "Frost White",
-                        quantity: 1,
-                        price: 99.99,
-                        currency: "USD",
-                        image_url: SERVER_URL + "/assets/gearvrsq.png"
-                    }],
-                    address: {
-                        street_1: "1 Hacker Way",
-                        street_2: "",
-                        city: "Menlo Park",
-                        postal_code: "94025",
-                        state: "CA",
-                        country: "US"
-                    },
-                    summary: {
-                        subtotal: 698.99,
-                        shipping_cost: 20.00,
-                        total_tax: 57.67,
-                        total_cost: 626.66
-                    },
-                    adjustments: [{
-                        name: "New Customer Discount",
-                        amount: -50
-                    }, {
-                        name: "$100 Off Coupon",
-                        amount: -100
-                    }]
-                }
-            }
-        }
-    };
-
-    callSendAPI(messageData);
-}
-
-/*
-* Send a message with Quick Reply buttons.
-*
-* NOTE: Opening camera effect doesn't work...
-*/
-function sendQuickReply(recipientId) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            attachment: {
-                type: "template",
-                payload: {
-                    template_type: "button",
-                    text: "Welcome. Link your account.",
-                    buttons:[{
-                        "type":"branded_camera",
-                        "title":"<CTA_TITLE>",
-                        "camera_metadata": {
-                            "content_id":"199604150680617"
-                        }
-                    }]
-                }
-            }
-        }
-    };
-
-    callSendAPI(messageData);
-}
-
-/*
-* Send a read receipt to indicate the message has been read
-*
-*/
-function sendReadReceipt(recipientId) {
-    console.log("Sending a read receipt to mark message as seen");
-
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        sender_action: "mark_seen"
-    };
-
-    callSendAPI(messageData);
-}
-
-/*
-* Turn typing indicator on
-*
-*/
-function sendTypingOn(recipientId) {
-    console.log("Turning typing indicator on");
-
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        sender_action: "typing_on"
-    };
-
-    callSendAPI(messageData);
-}
-
-/*
-* Turn typing indicator off
-*
-*/
-function sendTypingOff(recipientId) {
-    console.log("Turning typing indicator off");
-
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        sender_action: "typing_off"
-    };
-
-    callSendAPI(messageData);
-}
-
-/*
-* Send a message with the account linking call-to-action
-*
-*/
-function sendAccountLinking(recipientId) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            attachment: {
-                type: "template",
-                payload: {
-                    template_type: "button",
-                    text: "Welcome. Link your account.",
-                    buttons:[{
-                        type: "account_link",
-                        url: SERVER_URL + "/authorize"
-                    }]
-                }
-            }
-        }
-    };
-
-    callSendAPI(messageData);
-}
 
 /*
 * Send the default set of quick actions: News, Trailers, Games
@@ -1238,6 +707,10 @@ function sendGetStarted(recipientId) {
     callSendAPI(messageData);
 }
 
+/*
+* Send the Jurassic trailer
+*
+*/
 function sendGifMessage(recipientId, showAR) {
     var messageData = {
         recipient: {
@@ -1252,7 +725,7 @@ function sendGifMessage(recipientId, showAR) {
                     elements: [
                         {
                             media_type: 'image',
-                            attachment_id: '261774171042417'
+                            attachment_id: PROMO.gifId
                         }
                     ]
                 }
@@ -1286,9 +759,9 @@ function sendNotificationMessage(recipientId) {
                     template_type: "generic",
                     elements: [{
                         title: "There's a secret event happening at a location near you. "
-                       + "Stay up to date?",
+                            + "Stay up to date?",
                        subtitle: "Join the list and keep up-to-date.",
-                       image_url: "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Screen+Shot+2018-05-30+at+3.33.24+PM.png",
+                       image_url: PROMO.imageUrl,
                        buttons: [{
                            type: "postback",
                            title: "Yes I'm In!",
@@ -1300,6 +773,8 @@ function sendNotificationMessage(recipientId) {
         }]
     };
 
+    // After the user signs up for the first time, send them a notification
+    // in the future
     createBroadcastLabel(recipientId, function(label) {
         var d = new Date();
         var newDateObj = new Date(d.getTime() + 1440*60000);
@@ -1313,7 +788,7 @@ function sendNotificationMessage(recipientId) {
 *
 */
 function sendGamesMessage(recipientId) {
-    var link = encodeURIComponent("https://itunes.apple.com/ca/app/jurassic-world-alive/id1231085864");
+    var link = encodeURIComponent(GAME_ASSETS.itunesStoreUrl);
     var messageData = {
         recipient: {
             id: recipientId
@@ -1328,11 +803,11 @@ function sendGamesMessage(recipientId) {
                     elements: [{
                         title: "Jurassic World Alive AR Game",
                         subtitle: "Game on iOS and Android\nMobile",
-                        image_url: "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Jurassic-World-Alive.jpg",
+                        image_url: GAME_ASSETS.imageUrl,
                         buttons: [{
                             title: "Play",
                             type: "web_url",
-                            url: "https://s3.us-east-2.amazonaws.com/jurassic-bot/games-ui/index.html?u="+link,
+                            url: REDEIRECT_URL+link,
                             messenger_extensions: true,
                             webview_height_ratio: 'compact'
                         }]
@@ -1364,7 +839,7 @@ function sendTrailerList(recipientId) {
                         {
                             title: "Jurassic World Fallen Kingdom",
                             subtitle: 'Trailer\n2m 30s',
-                            image_url:  "https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/trailer_thumbnail.png",
+                            image_url:  TRAILERS[0].img,
                             buttons: [{
                                 type: "postback",
                                 title: "Watch",
@@ -1374,7 +849,7 @@ function sendTrailerList(recipientId) {
                         {
                             title: "Jurassic World Fallen Kingdom",
                             subtitle: "Behind the Scenes\n2m 36s",
-                            image_url:  "https://s3.us-east-2.amazonaws.com/jurassic-bot/marketing/behind_thumbnail.png",
+                            image_url:  TRAILERS[1].img,
                             buttons: [{
                                 type: "postback",
                                 title: "Watch",
@@ -1449,7 +924,7 @@ function sendImageMesage(recipientId, id) {
 }
 
 /*
-* Send a list of locations
+* Send a list of locations and directions using the Google Maps API
 *
 */
 function sendStoresLocationMessage(recipientId, locations, center) {
@@ -1471,22 +946,16 @@ function sendStoresLocationMessage(recipientId, locations, center) {
             + '&center=' + center
             + '&markers=color:red|label:B|' + otherLoc
             + '&markers=color:blue|label:A|' + center
-            + '&key=' + config.get('googleMapKey');
+            + '&key=' + GOOGLE_MAP_KEY;
         };
 
         var buildDirectionsUrl = function(otherLoc) {
-            // var directionsUrl = 'https://www.google.com/maps/dir/'
-            //     + center + '/'
-            //     + otherLoc;
-
             var directionsUrl = 'https://maps.google.com/?q='+otherLoc;
             var link = encodeURIComponent(directionsUrl);
-            // return directionsUrl;
-            return "https://s3.us-east-2.amazonaws.com/jurassic-bot/games-ui/index.html?u="+link;
+            return REDIRECT_URL + link;
         };
 
         var elements = locations.map(function(l) {
-            console.log(buildStaticMapUrl(l.location));
             return {
                 title: l.name + " ("+Math.round(l.distance*0.00621371)/10 + " mi)",
                 subtitle: "Tap to view on map",
@@ -1536,7 +1005,7 @@ function sendZipMessage(recipientId, zip) {
             if (body.results && body.results.length > 0 &&
                 body.results[0].geometry && body.results[0].geometry.location) {
                 var location = body.results[0].geometry.location;
-                console.log(location);
+
                 var stores = config.get('locations');
                 stores.forEach(function(store) {
                     var locationSplit = store.location.split(",");
@@ -1547,19 +1016,22 @@ function sendZipMessage(recipientId, zip) {
                     );
                     store.distance = distance;
                 });
+
                 stores.sort(function(a,b) {
                     if (a.distance < b.distance) { return -1; }
                     else if (a.distance > b.distance) { return 1; }
                     else if (a.distance == b.distance) { return 0; }
                 });
 
-                console.log(stores.slice(0,3))
-
-                sendStoresLocationMessage(recipientId, stores.slice(0,3), location.lat+","+location.lng);
+                sendStoresLocationMessage(
+                    recipientId, stores.slice(0,3), location.lat+","+location.lng
+                );
 
             }
-        } else {
-            console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
+        }
+        else {
+            console.error("Failed calling Send API", response.statusCode,
+                response.statusMessage, body.error);
         }
     });
 }
@@ -1605,23 +1077,24 @@ function sendNewsMessage(recipientId) {
                         {
                             title: "Fandango Launches Prop Store",
                             subtitle: "Article\nVariety",
-                            image_url: "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/jurassic-world-indominus-rex-head+(1).jpg",
+                            image_url: NEWS_ARTICLES.article1.imageUrl,
                             buttons: [{
                                 "title": "Read",
                                 "type": "web_url",
-                                "url": "https://variety.com/2018/film/news/fandango-prop-store-jurassic-world-fallen-kingdom-1202811346/",
+                                "url": NEWS_ARTICLES.article1.articleUrl,
                                 "messenger_extensions": true,
                                 "webview_height_ratio": "tall"
                             }]
                         },
                         {
-                            title: "Watch ‘Jurassic World Alive’ Trailer for ‘Pokemon Go’ Take on ‘Jurassic World’ (EXCLUSIVE)",
+                            title: "Watch ‘Jurassic World Alive’ Trailer for ‘Pokemon Go’ "
+                                + "Take on ‘Jurassic World’ (EXCLUSIVE)",
                             subtitle: "Article\nVariety",
-                            image_url: "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/jurassic-world-alive-feature.jpg",
+                            image_url: NEWS_ARTICLES.article2.imageUrl,
                             buttons: [{
                                 "title": "Read",
                                 "type": "web_url",
-                                "url": "https://variety.com/2018/gaming/news/jurassic-world-alive-trailer-1202825047/",
+                                "url": NEWS_ARTICLES.article2.articleUrl,
                                 "messenger_extensions": true,
                                 "webview_height_ratio": "tall"
                             }]
@@ -1629,11 +1102,11 @@ function sendNewsMessage(recipientId) {
                         {
                             title: "Jurassic World Evolution: 6 Quick Facts You Should Know",
                             subtitle: "Article\nCultured Vultures",
-                            image_url: "https://41zxbw463fq733z1kl101n01-wpengine.netdna-ssl.com/wp-content/uploads/2018/05/Jurassic-World-Evolution-750x430.jpg",
+                            image_url: NEWS_ARTICLES.article3.imageUrl,
                             buttons: [{
                                 "title": "Read",
                                 "type": "web_url",
-                                "url": "https://culturedvultures.com/jurassic-world-evolution-6-quick-facts-you-should-know/",
+                                "url": NEWS_ARTICLES.article2.articleUrl,
                                 "messenger_extensions": true,
                                 "webview_height_ratio": "tall"
                             }]
@@ -1777,7 +1250,7 @@ function sendTicketMessage(recipientId) {
                     buttons: [{
                         "title": "View Showtimes",
                         "type": "web_url",
-                        "url": "https://mobile.fandango.com/jurassic-world-fallen-kingdom-203382/movie-times",
+                        "url": SHOWTIMES_URL,
                         "messenger_extensions": true,
                         "webview_height_ratio": "full"
                     }]
@@ -1827,7 +1300,7 @@ function sendPaymentMessage(recipientId) {
                     template_type: "generic",
                     elements: [{
                         title: "Jurassic World [HD]",
-                        image_url: "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/JURASSIC_WORLD.jpg",
+                        image_url: POSTER_URL,
                         buttons: [{
                             "type":"payment",
                             "title":"buy",
@@ -1882,12 +1355,11 @@ function sendMoviesAnywhereMessage(recipientId) {
                     elements: [{
                         title: "Movies Anywhere",
                         subtitle: "Jurassic World [HD]",
-                        image_url: "https://s3.us-east-2.amazonaws.com/jurassic-bot/images/logo.png",
+                        image_url: MOVIES_ANYWHERE_URL,
                         buttons: [{
                             title: "Redeem",
                             type: "web_url",
-                            //   url: "https://moviesanywhere.com/redeem?code=4YMM9NK9M7EE",
-                            url: "https://s3.us-east-2.amazonaws.com/jurassic-bot/games-ui/redeem.html",
+                            url: REDEEM_URL,
                             messenger_extensions: true,
                             webview_height_ratio: 'tall'
                         }]
@@ -1905,7 +1377,7 @@ function sendMoviesAnywhereMessage(recipientId) {
 *
 */
 function sendAR1Message(recipientId) {
-    var link = encodeURIComponent('https://itunes.apple.com/us/app/ar-studio-player/id1231451896?mt=8');
+    var link = encodeURIComponent(AR_STUDIO_PLAYER_URL);
     var messageData = {
         recipient: {
             id: recipientId
@@ -1918,11 +1390,11 @@ function sendAR1Message(recipientId) {
                     template_type: "media",
                     elements: [{
                         media_type: "image",
-                        attachment_id: "261694911050343",
+                        attachment_id: AR_IMAGE_ID,
                         buttons: [{
                             title: "Unlock",
                             type: "web_url",
-                            url: "https://s3.us-east-2.amazonaws.com/jurassic-bot/games-ui/index.html?u="+link,
+                            url: REDIRECT_URL + link,
                             messenger_extensions: true,
                             webview_height_ratio: 'compact'
                         }]
@@ -1943,7 +1415,8 @@ function sendT1Message() {
     var messageData = {
         messages: [{
             quick_replies: QUICK_REPLIES,
-            text: "The secret event is 1 week away. It won't be long, the Fallen Kingdom will be taking over a location near you!"
+            text: "The secret event is 1 week away. It won't be long, the "
+                + "Fallen Kingdom will be taking over a location near you!"
         }]
     };
 
@@ -1958,7 +1431,9 @@ function sendT2Message() {
     var messageData = {
         messages: [
             {
-                text: "The Fallen Kingdom is here! There are life size Jurassic World Dinosaurs at selected retail locations near you. You'll even get to take one home with you. Search for the closest location by clicking below.",
+                text: "The Fallen Kingdom is here! There are life size Jurassic World "
+                    + "Dinosaurs at selected retail locations near you. You'll even get "
+                    + "to take one home with you. Search for the closest location by clicking below.",
                 quick_replies:[
                     { "content_type":"location" }
                 ]
@@ -1977,7 +1452,8 @@ function sendT3Message() {
     var messageData = {
         messages: [
             {
-                text: "There's one week left! Have you seen the Jurassic Dinosaurs yet? Search for them here.",
+                text: "There's one week left! Have you seen the Jurassic Dinosaurs "
+                    + "yet? Search for them here.",
                 quick_replies:[
                     { "content_type":"location" }
                 ]
@@ -2027,6 +1503,11 @@ function sendContestMessage(recipientId, message) {
     });
 }
 
+/*
+* Send a message about the contest winner
+* Wait a few seconds to simulate the contest in-play
+*
+*/
 function sendEnterContestMessage(recipientId) {
     sendQuickActions(recipientId);
 
@@ -2040,7 +1521,7 @@ function sendEnterContestMessage(recipientId) {
             }
         };
         callSendAPI(messageData, function() {
-            sendImageMesage(recipientId, 261808601038974);
+            sendImageMesage(recipientId, ENTER_CONTEST_IMAGE_ID);
         });
     }, 10000);
 }
@@ -2066,7 +1547,8 @@ function callSendAPI(messageData, callback) {
                 if (messageId) {
                     console.log("Successfully sent message with id %s to recipient %s",
                     messageId, recipientId);
-                } else {
+                }
+                else {
                     console.log("Successfully called Send API for recipient %s",
                     recipientId);
                 }
@@ -2075,14 +1557,13 @@ function callSendAPI(messageData, callback) {
                     callback(recipientId);
                 }
 
-            } else {
-                console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
+            }
+            else {
+                console.error("Failed calling Send API", response.statusCode,
+                    response.statusMessage, body.error);
             }
         });
     });
-    // if (callback) {
-    //     callback(messageData.recipient.id);
-    // }
 }
 
 /*
@@ -2096,7 +1577,6 @@ function callBroadcastAPI(messageData, callback, label, timestamp) {
             qs: { access_token: pageAccessToken },
             method: 'POST',
             json: messageData
-
         }, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 var messageId = body.message_creative_id;
@@ -2131,13 +1611,17 @@ function callBroadcastAPI(messageData, callback, label, timestamp) {
                             if (callback) {
                                 callback();
                             }
-                        } else {
-                            console.error("Failed calling Broadcast API", response.statusCode, response.statusMessage, body.error);
+                        }
+                        else {
+                            console.error("Failed calling Broadcast API",
+                                response.statusCode, response.statusMessage, body.error);
                         }
                     });
                 }
-            } else {
-                console.error("Failed calling Broadcast API", response.statusCode, response.statusMessage, body.error);
+            }
+            else {
+                console.error("Failed calling Broadcast API", response.statusCode,
+                    response.statusMessage, body.error);
             }
         });
     });
@@ -2179,13 +1663,17 @@ function createBroadcastLabel(psid, callback) {
                             if (callback) {
                                 callback(id);
                             }
-                        } else {
-                            console.error("Failed associating psid to label", response.statusCode, response.statusMessage, body.error);
+                        }
+                        else {
+                            console.error("Failed associating psid to label",
+                                response.statusCode, response.statusMessage, body.error);
                         }
                     });
                 }
-            } else {
-                console.error("Failed creating label", response.statusCode, response.statusMessage, body.error);
+            }
+            else {
+                console.error("Failed creating label", response.statusCode,
+                    response.statusMessage, body.error);
             }
         });
     });
