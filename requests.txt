@@ -4,7 +4,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
 }' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=${PAGE_ACCESS_TOKEN}"
 
 
-// Example of how to define the intial greeting message after the user
+// Example of how to define the initial greeting message after the user
 // has hit the 'Get Started' button
 curl -X POST -H "Content-Type: application/json" -d '{
     "greeting": [

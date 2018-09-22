@@ -32,7 +32,7 @@ Set the following parameters in `node/config/default.json` before running the sa
 
 Replace values for `APP_ID` and `PAGE_ID` in `node/public/index.html`.  This is a simple landing page for the webhook service.
 
-Some of the values (e.g. `promo.gifId`) in the `node/config/default.json` file will contain references to media asset `attachments` uploaded using the [Facebook Attachment Upload API](https://developers.facebook.com/docs/messenger-platform/reference/attachment-upload-api/).  As you'll see in this documentation, each request requires a `PAGE_ACCESS_TOKEN`, which is unique per Facebook page.  Therefore, you will need to upload your own assets and replace the values in the config file in order to properly display the associated content.
+Some of the values (e.g. `promo.gifId`) in the `node/config/default.json` file will contain references to media asset `attachments` uploaded using the [Facebook Attachment Upload API](https://developers.facebook.com/docs/messenger-platform/reference/attachment-upload-api/).  As you'll see in this documentation, each request requires a `PAGE_ACCESS_TOKEN`, which is unique per Facebook page.  You will need to upload your own assets and replace the values in the config file in order to properly display the associated content.
 
 ### Whitelisting Domains
 
@@ -40,26 +40,16 @@ All referenced external resources (e.g. www.google.com) must be whitelisted in t
 
 | Domain Name                                                                   |
 |-------------------------------------------------------------------------------|
-| https://www.slashgear.com/                                                    |
-| https://c.slashgear.com/                                                      |
 | https://41zxbw463fq733z1kl101n01-wpengine.netdna-ssl.com/                     |
 | https://culturedvultures.com/                                                 |
-| https://thumbor.forbes.com/                                                   |
-| https://www.forbes.com/                                                       |
 | https://itunes.apple.com/                                                     |
-| https://is2-ssl.mzstatic.com/                                                 |
 | https://maps.googleapis.com/                                                  |
 | https://maps.googleapis.com/maps/api/                                         |
 | https://www.google.com/                                                       |
 | https://ia.media-imdb.com/                                                    |
-| https://images-na.ssl-images-amazon.com/                                      |
 | https://moviesanywhere.com/                                                   |
-| https://horrorfuel.com/                                                       |
-| https://is3.mzstatic.com/                                                     |
 | https://s3.us-east-2.amazonaws.com/                                           |
-| https://handoff-cdn.appadvice.com/                                            |
 | https://maps.google.com/                                                      |
-| https://cdn.vox-cdn.com/                                                      |
 | https://variety.com/                                                          |
 | https://mobile.fandango.com/                                                  |
 | https://d1zzobb4u0984a.cloudfront.net/                                        |
@@ -82,6 +72,15 @@ This sample bot app requires the following webhook events to be enabled for this
 | messages             |
 | messaging_postbacks  |
 | messaging_referrals  |
+| messaging_payments   |
+
+### Payments
+
+To setup payments within Messenger, follow the following guides:
+
+* https://developers.facebook.com/docs/messenger-platform/payments/buy-button-payments
+* https://developers.facebook.com/docs/messenger-platform/payments/webview-payments/
+* https://developers.facebook.com/docs/messenger-platform/payments/payment-providers/
 
 ### Example Requests
 

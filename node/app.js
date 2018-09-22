@@ -807,7 +807,7 @@ function sendGamesMessage(recipientId) {
                         buttons: [{
                             title: "Play",
                             type: "web_url",
-                            url: REDEIRECT_URL+link,
+                            url: REDIRECT_URL+link,
                             messenger_extensions: true,
                             webview_height_ratio: 'compact'
                         }]
