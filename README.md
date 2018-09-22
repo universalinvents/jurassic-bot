@@ -26,18 +26,17 @@ Set the following parameters in `node/config/default.json` before running the sa
 
 | Placeholder          | Description                                                                                                                                        |
 |----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| ${APP_SECRET}        | This is the generated app secret for your Facebook Application.  All of your Facebook apps can be found here: https://developers.facebook.com/apps |
-| ${PAGE_ACCESS_TOKEN} | This is the access token for this app to respond to your chosen Facebook page.                                                                     |
+| ${APP_SECRET}        | This is the generated app secret for your Facebook application.  All of your Facebook apps can be found here: https://developers.facebook.com/apps |
+| ${PAGE_ACCESS_TOKEN} | This is the access token that enables this app to respond for your chosen Facebook page.                                                           |
 | ${GOOGLE_MAP_KEY}    | Part of this sample application uses the Google Maps API.  Generate a sample access token with the Maps API and insert it here.                    |
-|                      |                                                                                                                                                    |
 
-Replace values for `APP_ID` and `PAGE_ID` in `node/public/index.html`.  This is a simple landing page for the webhook.
+Replace values for `APP_ID` and `PAGE_ID` in `node/public/index.html`.  This is a simple landing page for the webhook service.
 
-Some of the values (e.g. `promo.gifId`) in the `node/config/default.json` file will contain references to `attachments` of media assets uploaded using the [Facebook Attachment Upload API](https://developers.facebook.com/docs/messenger-platform/reference/attachment-upload-api/).  As you'll see in this documentation, each request requires a `PAGE_ACCESS_TOKEN`, which is unique per Facebook page.  Therefore, you will need to upload your own assets and replace the values in the config file.
+Some of the values (e.g. `promo.gifId`) in the `node/config/default.json` file will contain references to media asset `attachments` uploaded using the [Facebook Attachment Upload API](https://developers.facebook.com/docs/messenger-platform/reference/attachment-upload-api/).  As you'll see in this documentation, each request requires a `PAGE_ACCESS_TOKEN`, which is unique per Facebook page.  Therefore, you will need to upload your own assets and replace the values in the config file in order to properly display the associated content.
 
 ### Whitelisting Domains
 
-All referenced external resources (e.g. www.google.com) must be whitelisted in the Facebook page settings under the **Message Platform** tab.  The following are domains that are referenced by this sample bot that should be added to the whitelist.
+All referenced external resources (e.g. www.google.com) must be whitelisted in the Facebook page settings under the **Message Platform** tab.  The following domains are referenced by this sample bot and should therefore be added to the whitelist.
 
 | Domain Name                                                                   |
 |-------------------------------------------------------------------------------|
@@ -86,7 +85,7 @@ This sample bot app requires the following webhook events to be enabled for this
 
 ### Example Requests
 
-Sample `curl` requests to the Facebook Messenger APIs can be found in **requirements.txt**
+Sample `curl` requests to the Facebook Messenger APIs can be found in **requirements.txt**.
 
 Example request use cases are as follows:
 
