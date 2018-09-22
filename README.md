@@ -76,7 +76,7 @@ This sample bot app requires the following webhook events to be enabled for this
 
 ### Payments
 
-To setup payments within Messenger, follow the following guides:
+To setup payments within Messenger, you must implement the following:
 
 * https://developers.facebook.com/docs/messenger-platform/payments/buy-button-payments
 * https://developers.facebook.com/docs/messenger-platform/payments/webview-payments/
