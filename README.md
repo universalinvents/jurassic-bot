@@ -93,7 +93,3 @@ Example request use cases are as follows:
 * Creating a persistent menu
 * Uploading files using the Attachment Upload API
 * Sending ad-hoc messages to users
-
-### License
-
-See the LICENSE file in the root directory of this source tree. Feel free to use and modify the code.
