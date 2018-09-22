@@ -21,6 +21,33 @@ app.use(express.static('public'));
 *
 */
 
+// App Secret can be retrieved from the App Dashboard
+const APP_SECRET = config.get('appSecret');
+
+// Arbitrary value used to validate a webhook
+const VALIDATION_TOKEN = config.get('validationToken');
+
+// Generate a page access token for your page from the App Dashboard
+const PAGE_ACCESS_TOKENS = config.get('pageAccessTokens');
+
+const GOOGLE_MAP_KEY = config.get('googleMapKey');
+const LOCATIONS = config.get('locations');
+const AR_CODES = config.get('arCodes');
+const GALLERY = config.get('imgGallery');
+const TRAILERS = config.get('trailers');
+const PROMO = config.get('promo');
+const GAME_ASSETS = config.get('gameAssets');
+const REDIRECT_URL = config.get('redirectUrl');
+const NEWS_ARTICLES = config.get('newsArticles');
+const SHOWTIMES_URL = config.get('showTimesUrl');
+const POSTER_URL = config.get('posterUrl');
+const MOVIES_ANYWHERE_URL = config.get('moviesAnywhereUrl');
+const REDEEM_URL = config.get('redeemUrl');
+const ENTER_CONTEST_IMAGE_ID = config.get('enterContestImageId');
+const AR_STUDIO_PLAYER_URL = config.get('arStudioPlayerUrl');
+const QUICK_REPLY_IMAGE_URLS = config.get('quickReplyImageUrls');
+const AR_IMAGE_ID = config.get('arImageId');
+
 // These should return after every message
 const QUICK_REPLIES = [
     {
@@ -54,33 +81,6 @@ const QUICK_REPLIES = [
         "image_url": QUICK_REPLY_IMAGE_URLS.games
     }
 ];
-
-// App Secret can be retrieved from the App Dashboard
-const APP_SECRET = config.get('appSecret');
-
-// Arbitrary value used to validate a webhook
-const VALIDATION_TOKEN = config.get('validationToken');
-
-// Generate a page access token for your page from the App Dashboard
-const PAGE_ACCESS_TOKENS = config.get('pageAccessTokens');
-
-const GOOGLE_MAP_KEY = config.get('googleMapKey');
-const LOCATIONS = config.get('locations');
-const AR_CODES = config.get('arCodes');
-const GALLERY = config.get('imgGallery');
-const TRAILERS = config.get('trailers');
-const PROMO = config.get('promo');
-const GAME_ASSETS = config.get('gameAssets');
-const REDIRECT_URL = config.get('redirectUrl');
-const NEWS_ARTICLES = config.get('newsArticles');
-const SHOWTIMES_URL = config.get('showTimesUrl');
-const POSTER_URL = config.get('posterUrl');
-const MOVIES_ANYWHERE_URL = config.get('moviesAnywhereUrl');
-const REDEEM_URL = config.get('redeemUrl');
-const ENTER_CONTEST_IMAGE_ID = config.get('enterContestImageId');
-const AR_STUDIO_PLAYER_URL = config.get('arStudioPlayerUrl');
-const QUICK_REPLY_IMAGE_URLS = config.get('quickReplyImageUrls');
-const AR_IMAGE_ID = config.get('arImageId');
 
 if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKENS
     && GOOGLE_MAP_KEY && LOCATIONS && AR_CODES && GALLERY && TRAILERS && PROMO
@@ -567,6 +567,9 @@ function receivedPostback(event) {
 * Referral Event
 *
 * This event is called when a parametric code was scanned
+* See here to generate a parametric code:
+* https://developers.facebook.com/docs/messenger-platform/discovery/messenger-codes/
+*
 */
 function receiveReferral(event) {
     var senderID = event.sender.id;

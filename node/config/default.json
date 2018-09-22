@@ -1,10 +1,10 @@
 {
-    "appSecret": "${APP_SECRET}",
+    "appSecret": "d6b9eb5de12011be7dd77842f8f8e5f7",
     "pageAccessTokens": [
-        "${PAGE_ACCESS_TOKEN}"
+        "EAANraiYhoC0BAAqHYkaOx5rvzZACTl5I1SG1s1w7BXnbV8yf9ChxytkRwKmHdg2xF91ywgklnwkozm2P6NPwfMhaKbgZBALKSXsOivdsqOvyKFIKWCOnxsYtSRthjiatwRCtZB1LWxocU3iQK1cq1BPZAzxvVj9uCd7Mn1w6GwZDZD"
     ],
     "validationToken": "TOKEN",
-    "googleMapKey": "${GOOGLE_MAP_KEY}",
+    "googleMapKey": "AIzaSyDXwnZUnf-IUmUQPHHrtQsgiEBaSwVed6k",
     "locations": [
         {
             "name": "Walmart, Burbank",

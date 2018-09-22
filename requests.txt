@@ -1,0 +1,107 @@
+// Example of setting the 'Get Started' button
+curl -X POST -H "Content-Type: application/json" -d '{
+    "get_started": {"payload": "get_started"}
+}' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=${PAGE_ACCESS_TOKEN}"
+
+
+// Example of how to define the intial greeting message after the user
+// has hit the 'Get Started' button
+curl -X POST -H "Content-Type: application/json" -d '{
+    "greeting": [
+        {
+            "locale":"default",
+            "text":"Welcome to the Historical Jurassic World bot experience!"
+        }
+    ]
+}' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=${PAGE_ACCESS_TOKEN}"
+
+
+// Example of sending a direct message
+curl -X POST -H "Content-Type: application/json" -d '{
+    "messages": [{
+        text: "The secret event is 1 week away. It wont be long, the Fallen Kingdom will be taking over a location near you!"
+    }]
+}' "https://graph.facebook.com/v2.11/me/message_creatives?access_token=${PAGE_ACCESS_TOKEN}"
+
+
+// Example of requesting the location to send their location to the bot
+curl -X POST -H "Content-Type: application/json" -d '{
+    "messages": [
+        {
+            text: "The Fallen Kingdom is here! There are life size Jurassic World Dinosaurs at selected retail locations near you. You'll even get to take one home with you. Search for the closest location by clicking below.",
+            quick_replies:[
+                { "content_type":"location" }
+            ]
+        }
+    ]
+}' "https://graph.facebook.com/v2.11/me/message_creatives?access_token=${PAGE_ACCESS_TOKEN}"
+
+
+// Example of the broadcast api
+curl -X POST -H "Content-Type: application/json" -d '{
+    "message_creative_id": 1817568511882879,
+    "notification_type": "REGULAR",
+    "messaging_type": "MESSAGE_TAG",
+    "schedule_time": "1527680782"
+}' "https://graph.facebook.com/v2.11/me/broadcast_messages?access_token=<PAGE_ACCESS_TOKEN>"
+
+
+// Example of creating a messenger code with a specific ref ID
+curl -X POST -H "Content-Type: application/json" -d '{
+    "type": "standard",
+    "data": {
+        "ref":"dna-1"
+    },
+    "image_size": 1000
+}' "https://graph.facebook.com/v2.6/me/messenger_codes?access_token=${PAGE_ACCESS_TOKEN}"
+
+
+// Example of how to define a persistent menu
+curl -X POST -H "Content-Type: application/json" -d '{
+    "persistent_menu":[
+        {
+            "locale": "default",
+            "composer_input_disabled": false,
+            "call_to_actions": [
+                {
+                    "title":"Buy Now",
+                    "type": "postback",
+                    "payload": "buy"
+                },
+                {
+                    "title": "Locate In-Store AR Experience",
+                    "type": "postback",
+                    "payload": "store_locations"
+                },
+                {
+                    "type":"web_url",
+                    "title":"Play Jurassic World Alive",
+                    "url":"https://s3.us-east-2.amazonaws.com/jurassic-bot/games-ui/index.html?u=https%3A%2F%2Fitunes.apple.com%2Fca%2Fapp%2Fjurassic-world-alive%2Fid1231085864",
+                    "messenger_extensions": true,
+                    "webview_height_ratio":"compact"
+                }
+            ]
+        }
+    ]
+}' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=${PAGE_ACCESS_TOKEN}"
+
+
+// Example of how to create a media attachment
+curl -X POST -H "Content-Type: application/json" -d '{
+    "message":{
+        "attachment":{
+            "type":"image",
+            "payload":{
+                "is_reusable": true,
+                "url":"https://s3.us-east-2.amazonaws.com/jurassic-bot/images/Screen+Shot+2018-05-30+at+7.17.05+PM.png"
+            }
+        }
+    }
+}' "https://graph.facebook.com/v2.6/me/message_attachments?access_token=${PAGE_ACCESS_TOKEN}
+
+
+// Example of how to create a media attachment from a file disk
+curl  \
+  -F 'message={"attachment":{"type":"image", "payload":{"is_reusable":true}}}' \
+  -F 'filedata=@${PATH_TO_FILE};type=image/png' \
+  "https://graph.facebook.com/v2.6/me/message_attachments?access_token=${PAGE_ACCESS_TOKEN}"
