@@ -20,21 +20,21 @@ It contains the following functionality:
 
 The full tutorial can be found here: https://developers.facebook.com/docs/messenger-platform/quickstart
 
-## Setup
+### Setup
 
 Set the following parameters in `node/config/default.json` before running the sample.
 
-| ${APP_SECRET}        | This is the generated app secret for your Facebook Application.  All of your Facebook apps can be found here: https://developers.facebook.com/apps |   |   |   |
-|----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|---|---|---|
-| ${PAGE_ACCESS_TOKEN} | This is the access token for this app to respond to your chosen Facebook page.                                                                     |   |   |   |
-| ${GOOGLE_MAP_KEY}    | Part of this sample application uses the Google Maps API.  Generate a sample access token with the Maps API and insert it here.                    |   |   |   |
-|                      |                                                                                                                                                    |   |   |   |
+| ${APP_SECRET}        | This is the generated app secret for your Facebook Application.  All of your Facebook apps can be found here: https://developers.facebook.com/apps |
+|----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| ${PAGE_ACCESS_TOKEN} | This is the access token for this app to respond to your chosen Facebook page.                                                                     |
+| ${GOOGLE_MAP_KEY}    | Part of this sample application uses the Google Maps API.  Generate a sample access token with the Maps API and insert it here.                    |
+|                      |                                                                                                                                                    |
 
 Replace values for `APP_ID` and `PAGE_ID` in `node/public/index.html`.  This is a simple landing page for the webhook.
 
 Some of the values (e.g. `promo.gifId`) in the `node/config/default.json` file will contain references to `attachments` of media assets uploaded using the [Facebook Attachment Upload API](https://developers.facebook.com/docs/messenger-platform/reference/attachment-upload-api/).  As you'll see in this documentation, each request requires a `PAGE_ACCESS_TOKEN`, which is unique per Facebook page.  Therefore, you will need to upload your own assets and replace the values in the config file.
 
-## Whitelisting Domains
+### Whitelisting Domains
 
 All referenced external resources (e.g. www.google.com) must be whitelisted in the Facebook page settings under the *Message Platform* tab.  The following are domains that are referenced by this sample bot that should be added to the whitelist.
 
@@ -64,13 +64,13 @@ All referenced external resources (e.g. www.google.com) must be whitelisted in t
 | https://mobile.fandango.com/                                                  |
 | https://d1zzobb4u0984a.cloudfront.net/                                        |
 
-## Run
+### Run
 
 You can start the server by running `npm start` int the node directory. However, the webhook must be at a public URL that the Facebook servers can reach. Therefore, running the server locally on your machine will not work.
 
 You can run this example on a cloud service provider like Heroku, Google Cloud Platform or AWS. Note that webhooks *must* have a valid SSL certificate, signed by a certificate authority. Read more about setting up SSL for a [Webhook](https://developers.facebook.com/docs/graph-api/webhooks#setup).
 
-## Webhook
+### Webhook
 
 All webhook code is in `node/app.js`. It is routed to the `/webhook` endpoint. More details are available at the [reference docs](https://developers.facebook.com/docs/messenger-platform/webhook-reference).
 
@@ -83,7 +83,7 @@ This sample bot app requires the following webhook events to be enabled for this
 | messaging_postbacks  |
 | messaging_referrals  |
 
-## Example Requests
+### Example Requests
 
 Sample `curl` requests to the Facebook Messenger APIs can be found in requirements.txt
 
@@ -94,6 +94,6 @@ Example request use cases are as follows:
 * Uploading files using the Attachment Upload API
 * Sending ad-hoc messages to users
 
-## License
+### License
 
 See the LICENSE file in the root directory of this source tree. Feel free to use and modify the code.
