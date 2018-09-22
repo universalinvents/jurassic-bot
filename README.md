@@ -24,8 +24,9 @@ The full tutorial can be found here: https://developers.facebook.com/docs/messen
 
 Set the following parameters in `node/config/default.json` before running the sample.
 
-| ${APP_SECRET}        | This is the generated app secret for your Facebook Application.  All of your Facebook apps can be found here: https://developers.facebook.com/apps |
+| Placeholder          | Description                                                                                                                                        |
 |----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| ${APP_SECRET}        | This is the generated app secret for your Facebook Application.  All of your Facebook apps can be found here: https://developers.facebook.com/apps |
 | ${PAGE_ACCESS_TOKEN} | This is the access token for this app to respond to your chosen Facebook page.                                                                     |
 | ${GOOGLE_MAP_KEY}    | Part of this sample application uses the Google Maps API.  Generate a sample access token with the Maps API and insert it here.                    |
 |                      |                                                                                                                                                    |
