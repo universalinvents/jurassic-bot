@@ -36,7 +36,7 @@ Some of the values (e.g. `promo.gifId`) in the `node/config/default.json` file w
 
 ### Whitelisting Domains
 
-All referenced external resources (e.g. www.google.com) must be whitelisted in the Facebook page settings under the *Message Platform* tab.  The following are domains that are referenced by this sample bot that should be added to the whitelist.
+All referenced external resources (e.g. www.google.com) must be whitelisted in the Facebook page settings under the **Message Platform** tab.  The following are domains that are referenced by this sample bot that should be added to the whitelist.
 
 | Domain Name                                                                   |
 |-------------------------------------------------------------------------------|
@@ -74,7 +74,7 @@ You can run this example on a cloud service provider like Heroku, Google Cloud P
 
 All webhook code is in `node/app.js`. It is routed to the `/webhook` endpoint. More details are available at the [reference docs](https://developers.facebook.com/docs/messenger-platform/webhook-reference).
 
-This sample bot app requires the following webhook events to be enabled for this Facebook app.  The settings can be found under Product > Messenger > Settings in FB app developer portal.
+This sample bot app requires the following webhook events to be enabled for this Facebook app.  The settings can be found under **Product > Messenger > Settings** in FB app developer portal.
 <INSERT TABLE>
 
 | Domain Name          |
@@ -85,7 +85,7 @@ This sample bot app requires the following webhook events to be enabled for this
 
 ### Example Requests
 
-Sample `curl` requests to the Facebook Messenger APIs can be found in requirements.txt
+Sample `curl` requests to the Facebook Messenger APIs can be found in **requirements.txt**
 
 Example request use cases are as follows:
 
